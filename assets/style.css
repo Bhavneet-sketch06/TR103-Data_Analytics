@@ -1,0 +1,85 @@
+/* ==========================================================
+GENERAL
+========================================================== */
+
+
+
+
+/* ==========================================================
+SECTION TITLE
+========================================================== */
+
+.section-title{
+
+    font-size:34px;
+
+    font-weight:700;
+
+    color: inherit;
+
+    margin-top:35px;
+
+    margin-bottom:20px;
+
+}
+
+
+/* ==========================================================
+METRIC CARD
+========================================================== */
+
+.metric-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 5px 18px rgba(0,0,0,0.08);
+
+    transition:0.3s;
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+    border-top:5px solid #2563EB;
+
+}
+
+.metric-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,0.15);
+
+}
+
+.metric-icon{
+
+    font-size:34px;
+
+}
+
+.metric-title{
+
+    color: inherit;
+
+    font-size:17px;
+
+    margin-top:10px;
+
+}
+
+.metric-value{
+
+    color: inherit;
+
+    font-size:34px;
+
+    font-weight:bold;
+
+    margin-top:12px;
+
+}
