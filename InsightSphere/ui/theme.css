@@ -1,0 +1,310 @@
+/* ==========================================================
+   InsightSphere theme — written only against --is-* variables
+   (defined in ui/tokens.py, light-dark() pairs on .stApp).
+   ========================================================== */
+
+/* ---------- App chrome ---------- */
+
+[data-testid="stDecoration"],
+[data-testid="stAppDeployButton"],
+[data-testid="stMainMenu"],
+footer { display: none !important; }
+
+[data-testid="stHeader"] {
+  background: transparent;
+  height: 2.5rem;
+}
+
+[data-testid="stMainBlockContainer"] {
+  max-width: 1440px;
+  padding: 1.75rem 2.5rem 4rem;
+}
+
+.stApp {
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+
+.is-num, [data-testid="stMetricValue"], .is-kpi-value, .is-chip-value {
+  font-variant-numeric: tabular-nums;
+}
+
+hr { border-color: var(--is-border) !important; margin: 0.5rem 0 1rem !important; }
+
+/* ---------- Sidebar ---------- */
+
+[data-testid="stSidebar"] {
+  border-right: 1px solid var(--is-border);
+}
+
+[data-testid="stSidebarHeader"] { padding: 1.25rem 1.25rem 0.5rem; }
+
+[data-testid="stLogo"] { height: 1.75rem; width: 1.75rem; }
+
+[data-testid="stLogoLink"] { display: inline-flex; align-items: center; gap: 10px; }
+[data-testid="stLogoLink"]::after {
+  content: "InsightSphere";
+  font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em;
+  color: var(--is-text);
+}
+
+/* Markdown wrappers around HTML components shouldn't add paragraph margins */
+[data-testid="stMarkdownContainer"]:has(> .is-kpi, > .is-list, > .is-empty, > .is-dataset,
+  > .is-chip-row, > .is-stepper, > .is-page-head, > .is-card-head, > .is-side-label) { margin: 0; }
+
+[data-testid="stSidebarNav"] { padding-top: 0.25rem; }
+
+[data-testid="stNavSectionHeader"] {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--is-text-3) !important;
+  padding-top: 0.75rem;
+}
+
+[data-testid="stSidebarNavLink"] {
+  border-radius: var(--is-radius-control);
+  padding: 0.3rem 0.6rem;
+  margin: 1px 0;
+}
+
+[data-testid="stSidebarNavLink"] span { font-size: 13.5px; font-weight: 500; }
+
+[data-testid="stSidebarNavLink"]:hover { background: var(--is-surface-hover); }
+
+[data-testid="stSidebarNavLink"][aria-current="page"] {
+  background: var(--is-accent-soft);
+}
+
+[data-testid="stSidebarNavLink"][aria-current="page"] span {
+  color: var(--is-accent-text);
+}
+
+[data-testid="stSidebarNavSeparator"] { display: none; }
+
+[data-testid="stSidebarUserContent"] { padding-top: 0.5rem; }
+
+.is-side-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--is-text-3);
+  margin: 0.25rem 0 0.25rem;
+}
+
+/* Dataset chip at the bottom of the sidebar */
+.is-dataset {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1px solid var(--is-border);
+  border-radius: var(--is-radius-card);
+  background: var(--is-surface);
+}
+.is-dataset-icon {
+  flex: none;
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  background: var(--is-accent-soft);
+  color: var(--is-accent);
+}
+.is-dataset-name {
+  font-size: 13px; font-weight: 600; color: var(--is-text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px;
+}
+.is-dataset-meta { font-size: 12px; color: var(--is-text-3); line-height: 1.45; }
+
+/* ---------- Page header ---------- */
+
+.is-page-head { padding: 0.25rem 0 0.25rem; }
+.is-eyebrow {
+  font-size: 12px; font-weight: 500; color: var(--is-text-3); margin: 0 0 4px;
+}
+.is-page-title {
+  font-size: 22px; font-weight: 650; letter-spacing: -0.015em;
+  color: var(--is-text); margin: 0; line-height: 1.25;
+}
+.is-page-sub { font-size: 13.5px; color: var(--is-text-2); margin: 4px 0 0; }
+
+/* ---------- Cards (st.container(key="card-...")) ---------- */
+
+[class*="st-key-card"] {
+  background: var(--is-surface);
+  border: 1px solid var(--is-border);
+  border-radius: var(--is-radius-card);
+  box-shadow: var(--is-shadow);
+  padding: 16px 18px 12px;
+}
+
+.is-card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.is-card-title { font-size: 14px; font-weight: 600; color: var(--is-text); margin: 0; }
+.is-card-sub { font-size: 12.5px; color: var(--is-text-3); margin: 2px 0 0; }
+
+/* ---------- KPI tile ---------- */
+
+.is-kpi {
+  background: var(--is-surface);
+  border: 1px solid var(--is-border);
+  border-radius: var(--is-radius-card);
+  box-shadow: var(--is-shadow);
+  padding: 14px 16px 12px;
+  height: 100%;
+  display: flex; flex-direction: column; gap: 6px;
+  min-height: 150px;
+}
+.is-kpi-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.is-kpi-label { font-size: 12.5px; font-weight: 500; color: var(--is-text-2); }
+.is-kpi-value {
+  font-size: 26px; font-weight: 650; letter-spacing: -0.02em; color: var(--is-text);
+  line-height: 1.15;
+}
+.is-kpi-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 8px; margin-top: auto; }
+.is-kpi-period { font-size: 11.5px; color: var(--is-text-3); }
+.is-kpi-spark svg { display: block; }
+.is-kpi-target { margin-top: 2px; }
+.is-meter { height: 4px; border-radius: 99px; background: var(--is-accent-soft); overflow: hidden; }
+.is-meter > span { display: block; height: 100%; border-radius: 99px; background: var(--is-accent); }
+.is-meter-label { font-size: 11.5px; color: var(--is-text-3); margin-top: 4px; }
+
+/* ---------- Delta / status pills ---------- */
+
+.is-delta {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 12px; font-weight: 600;
+  padding: 2px 7px; border-radius: 999px;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.is-delta-good { color: var(--is-good); background: var(--is-good-soft); }
+.is-delta-bad { color: var(--is-bad); background: var(--is-bad-soft); }
+.is-delta-flat { color: var(--is-text-2); background: var(--is-neutral-soft); }
+
+.is-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px;
+}
+.is-pill-good { color: var(--is-good); background: var(--is-good-soft); }
+.is-pill-warn { color: var(--is-warn); background: var(--is-warn-soft); }
+.is-pill-bad { color: var(--is-bad); background: var(--is-bad-soft); }
+.is-pill-info { color: var(--is-accent-text); background: var(--is-accent-soft); }
+.is-pill-neutral { color: var(--is-text-2); background: var(--is-neutral-soft); }
+
+/* ---------- Alert / insight list ---------- */
+
+.is-list { list-style: none; margin: 4px 0 0; padding: 0; }
+.is-list li {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 0; border-top: 1px solid var(--is-border);
+}
+.is-list li:first-child { border-top: none; }
+.is-list-icon {
+  flex: none; width: 26px; height: 26px; border-radius: 8px;
+  display: grid; place-items: center; font-size: 14px;
+}
+.is-list-icon.good { background: var(--is-good-soft); color: var(--is-good); }
+.is-list-icon.warn { background: var(--is-warn-soft); color: var(--is-warn); }
+.is-list-icon.bad { background: var(--is-bad-soft); color: var(--is-bad); }
+.is-list-icon.info { background: var(--is-accent-soft); color: var(--is-accent); }
+.is-list-title { font-size: 13px; font-weight: 600; color: var(--is-text); margin: 0; }
+.is-list-body { font-size: 12.5px; color: var(--is-text-2); margin: 2px 0 0; line-height: 1.45; }
+
+/* ---------- Empty / locked states ---------- */
+
+.is-empty {
+  text-align: center; padding: 40px 24px;
+  border: 1px dashed var(--is-border-strong);
+  border-radius: var(--is-radius-card);
+  background: var(--is-surface);
+}
+.is-empty-icon {
+  width: 44px; height: 44px; margin: 0 auto 12px; border-radius: 12px;
+  display: grid; place-items: center;
+  background: var(--is-accent-soft); color: var(--is-accent);
+}
+.is-empty-title { font-size: 15px; font-weight: 600; color: var(--is-text); margin: 0; }
+.is-empty-body { font-size: 13px; color: var(--is-text-2); margin: 6px auto 0; max-width: 440px; }
+
+/* ---------- Stat chips (small inline facts) ---------- */
+
+.is-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.is-chip {
+  border: 1px solid var(--is-border); border-radius: 10px; background: var(--is-surface);
+  padding: 8px 12px; min-width: 120px;
+}
+.is-chip-label { font-size: 11.5px; color: var(--is-text-3); }
+.is-chip-value { font-size: 15px; font-weight: 600; color: var(--is-text); }
+
+/* ---------- Stepper (Data page) ---------- */
+
+.is-stepper { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 2px 0 6px; }
+.is-step { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--is-text-3); }
+.is-step-dot {
+  width: 22px; height: 22px; border-radius: 999px; display: grid; place-items: center;
+  font-size: 12px; font-weight: 600; border: 1px solid var(--is-border-strong); color: var(--is-text-3);
+}
+.is-step.done .is-step-dot { background: var(--is-accent); border-color: var(--is-accent); color: #fff; }
+.is-step.active { color: var(--is-text); font-weight: 600; }
+.is-step.active .is-step-dot { border-color: var(--is-accent); color: var(--is-accent); }
+.is-step-line { width: 28px; height: 1px; background: var(--is-border-strong); }
+
+/* ---------- Filter chips (st.container(key="chips")) ---------- */
+
+.st-key-chips button {
+  border-radius: 999px !important;
+  padding: 2px 10px !important;
+  min-height: 28px !important;
+  font-size: 12.5px !important;
+  background: var(--is-accent-soft) !important;
+  border: 1px solid transparent !important;
+  color: var(--is-accent-text) !important;
+}
+.st-key-chips button:hover { border-color: var(--is-accent) !important; }
+.st-key-chips .st-key-chip-clear button {
+  background: transparent !important; color: var(--is-text-2) !important;
+}
+
+/* ---------- Native element polish ---------- */
+
+[data-testid="stPlotlyChart"] .modebar { opacity: 0; transition: opacity .15s; }
+[data-testid="stPlotlyChart"]:hover .modebar { opacity: 1; }
+
+[data-testid="stDataFrame"] {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+[data-testid="stTabs"] [data-baseweb="tab-list"] { gap: 4px; }
+[data-testid="stTabs"] button[data-baseweb="tab"] p { font-size: 13.5px; font-weight: 500; }
+
+[data-testid="stExpander"] details {
+  border-radius: var(--is-radius-card);
+  background: var(--is-surface);
+}
+
+[data-testid="stFileUploaderDropzone"] {
+  border-radius: var(--is-radius-card);
+  border: 1px dashed var(--is-border-strong);
+  background: var(--is-surface);
+}
+
+/* Sidebar widgets: compact labels */
+[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {
+  font-size: 12.5px; font-weight: 500; color: var(--is-text-2);
+}
+
+/* ---------- Responsive ---------- */
+
+/* Rows of tiles/cards wrap instead of squeezing: a KPI tile never gets
+   narrower than its number, a chart card never narrower than a readable chart. */
+[data-testid="stHorizontalBlock"] { flex-wrap: wrap; row-gap: 1rem; }
+[data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:has(.is-kpi) { min-width: 172px; }
+[data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:has([class*="st-key-card"]) { min-width: min(340px, 100%); }
+.is-kpi-value { white-space: nowrap; }
+
+@media (max-width: 900px) {
+  [data-testid="stMainBlockContainer"] { padding: 1.25rem 1rem 3rem; }
+  .is-kpi-value { font-size: 22px; }
+}

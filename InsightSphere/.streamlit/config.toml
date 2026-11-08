@@ -1,0 +1,48 @@
+# Generated from ui/tokens.py — run `python -m ui.tokens` after changing tokens.
+
+[server]
+headless = true
+runOnSave = false
+
+[client]
+toolbarMode = "minimal"
+
+[theme]
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+headingFont = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+codeFont = "monospace"
+baseFontSize = 14
+baseRadius = "10px"
+buttonRadius = "8px"
+showWidgetBorder = true
+showSidebarBorder = true
+headingFontWeights = [600, 600, 600, 600, 600, 600]
+headingFontSizes = ["28px", "20px", "16px", "14px", "13px", "12px"]
+chartCategoricalColors = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
+chartSequentialColors = ["#cde2fb", "#b7d3f6", "#9ec5f4", "#86b6ef", "#6da7ec", "#5598e7", "#3987e5", "#2a78d6", "#256abf", "#1c5cab"]
+
+[theme.light]
+primaryColor = "#4F46E5"
+backgroundColor = "#FAFAFA"
+secondaryBackgroundColor = "#F4F4F6"
+textColor = "#18181B"
+borderColor = "#E4E4E9"
+linkColor = "#4F46E5"
+
+[theme.light.sidebar]
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F4F4F6"
+borderColor = "#E4E4E9"
+
+[theme.dark]
+primaryColor = "#818CF8"
+backgroundColor = "#0B0B0F"
+secondaryBackgroundColor = "#1B1B21"
+textColor = "#EDEDF0"
+borderColor = "#26262C"
+linkColor = "#A5B4FC"
+
+[theme.dark.sidebar]
+backgroundColor = "#111115"
+secondaryBackgroundColor = "#1B1B21"
+borderColor = "#26262C"

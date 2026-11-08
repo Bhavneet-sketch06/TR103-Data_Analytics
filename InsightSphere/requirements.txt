@@ -1,0 +1,8 @@
+# Runtime dependencies for InsightSphere (Python 3.12+)
+streamlit>=1.59,<2
+pandas>=3.0,<4
+numpy>=2.2,<3
+plotly>=6.0,<7
+statsmodels>=0.15,<0.16
+anthropic>=2.6,<3
+openpyxl>=3.1,<4

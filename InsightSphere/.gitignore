@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploaded / raw datasets
+data/*.csv
+data/*.xlsx
+data/*.xls
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Python cache
+*.pyc
+
+# Temporary files
+*.tmp
+*.temp
+
+# Logs
+*.log
+# Uploaded datasets kept for reload/shared links
+data/uploads/
+# Bundled sample dataset (the app's default data)
+!data/Sample - Superstore.csv
+
+# Local Claude Code config
+.claude/

@@ -1,0 +1,252 @@
+/* ==========================================================
+   PREDICTION HISTORY — ENTERPRISE BI STYLE SHEET
+   Palette: primary blue, white, light gray, soft borders
+   ========================================================== */
+
+:root {
+    --ph-primary: #2F6FED;
+    --ph-primary-soft: #EAF1FE;
+    --ph-text-dark: #1A2233;
+    --ph-text-muted: #6B7280;
+    --ph-border: #E7EAF0;
+    --ph-bg-card: #FFFFFF;
+    --ph-bg-page: #F6F8FB;
+    --ph-shadow: 0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
+    --ph-shadow-hover: 0 6px 16px rgba(16, 24, 40, 0.10);
+    --ph-green-bg: #E7F7EE;
+    --ph-green-text: #15803D;
+    --ph-yellow-bg: #FFF6E0;
+    --ph-yellow-text: #B7791F;
+    --ph-red-bg: #FDECEC;
+    --ph-red-text: #C0362C;
+}
+
+/* ---------- Page header ---------- */
+.ph-header-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.ph-header-icon {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    border-radius: 16px;
+    background: var(--ph-primary-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+div[data-testid="stMarkdownContainer"] p.ph-header-title {
+    font-size: 44px !important;
+    font-weight: 800 !important;
+    color: var(--ph-text-dark) !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.5px !important;
+}
+
+div[data-testid="stMarkdownContainer"] p.ph-header-subtitle {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    color: var(--ph-text-muted) !important;
+    margin: 4px 0 0 0 !important;
+}
+
+.ph-section-spacer {
+    height: 26px;
+}
+
+/* ---------- KPI Cards ---------- */
+.ph-kpi-card {
+    background: var(--ph-bg-card);
+    border: 1px solid var(--ph-border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: var(--ph-shadow);
+    transition: box-shadow 0.18s ease, transform 0.18s ease;
+    height: 100%;
+}
+
+.ph-kpi-card:hover {
+    box-shadow: var(--ph-shadow-hover);
+    transform: translateY(-2px);
+}
+
+.ph-kpi-label-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.ph-kpi-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: var(--ph-primary-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+
+.ph-kpi-label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ph-text-muted);
+}
+
+.ph-kpi-value {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--ph-text-dark);
+    letter-spacing: -0.3px;
+}
+
+/* ---------- Records card container ----------
+   Targets Streamlit's native st.container(border=True) wrapper that
+   holds our title/subtitle, so the whole section (title, buttons, table)
+   is a single real card instead of a stray decorative div. */
+div[data-testid="stVerticalBlockBorderWrapper"]:has(.ph-records-title) {
+    border-radius: 18px !important;
+    border-color: var(--ph-border) !important;
+    box-shadow: var(--ph-shadow) !important;
+    padding: 6px 6px 2px 6px;
+}
+
+.ph-records-title {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--ph-text-dark);
+    margin: 0;
+}
+
+.ph-records-subtitle {
+    font-size: 13.5px;
+    color: var(--ph-text-muted);
+    margin: 2px 0 0 0;
+}
+
+/* Center-align the title + action-buttons row specifically
+   (scoped with :has so it does NOT affect the KPI cards row above) */
+div[data-testid="stHorizontalBlock"]:has(.ph-records-title) {
+    align-items: center !important;
+    padding-top: 4px;
+}
+
+/* ---------- Buttons ---------- */
+div[data-testid="stDownloadButton"],
+div[data-testid="stPopover"] {
+    margin-top: 0 !important;
+}
+
+div[data-testid="stDownloadButton"] button {
+    border-radius: 10px !important;
+    border: 1px solid var(--ph-primary) !important;
+    color: var(--ph-primary) !important;
+    background: #FFFFFF !important;
+    font-weight: 600 !important;
+    font-size: 13.5px !important;
+    padding: 6px 14px !important;
+    transition: background 0.15s ease;
+}
+div[data-testid="stDownloadButton"] button:hover {
+    background: var(--ph-primary-soft) !important;
+}
+
+.ph-danger-btn button {
+    border-radius: 10px !important;
+    border: 1px solid #F3C6C2 !important;
+    color: #C0362C !important;
+    background: #FFF9F9 !important;
+    font-weight: 600 !important;
+    font-size: 13.5px !important;
+    padding: 6px 14px !important;
+}
+.ph-danger-btn button:hover {
+    background: var(--ph-red-bg) !important;
+}
+
+/* ---------- Table ---------- */
+.ph-table-wrap {
+    max-height: 560px;
+    overflow: auto;
+    border: 1px solid var(--ph-border);
+    border-radius: 14px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+}
+
+.ph-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13.5px;
+    color: var(--ph-text-dark);
+}
+
+.ph-table thead th {
+    position: sticky;
+    top: 0;
+    background: #FAFBFD;
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 700;
+    color: var(--ph-text-muted);
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid var(--ph-border);
+    z-index: 2;
+    white-space: nowrap;
+}
+
+.ph-table tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--ph-border);
+    white-space: nowrap;
+}
+
+.ph-table tbody tr:nth-child(even) {
+    background: #FAFBFD;
+}
+
+.ph-table tbody tr:hover {
+    background: var(--ph-primary-soft);
+}
+
+.ph-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ---------- Revenue badges ---------- */
+.ph-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.ph-badge-high {
+    background: var(--ph-green-bg);
+    color: var(--ph-green-text);
+}
+
+.ph-badge-medium {
+    background: var(--ph-yellow-bg);
+    color: var(--ph-yellow-text);
+}
+
+.ph-badge-low {
+    background: var(--ph-red-bg);
+    color: var(--ph-red-text);
+}
