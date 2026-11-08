@@ -7,18 +7,16 @@ import io
 import pandas as pd
 import streamlit as st
 
-from core import db, ingest, state
-from core.schema import FIELDS, FIELD_BY_KEY, suggest_mapping, validate_mapping
+from core import db, state
+from core.schema import FIELDS, FIELD_BY_KEY
 from ui import components as ui
+from ui import shell, upload
 from ui.charts import compact
-
-K_UPLOADER = "uploader_nonce"
-K_PENDING = "pending_mapping"
 
 dataset = state.get_dataset()
 df = dataset.df
 
-ui.page_header("Data", "Upload a sales file, map its columns, and check its health.")
+shell.header("Data", "Upload a sales file, map its columns, and check its health.")
 st.space("small")
 
 
@@ -26,15 +24,11 @@ st.space("small")
 # 1. SOURCE
 # ==========================================================
 
-nonce = st.session_state.setdefault(K_UPLOADER, 0)
 src_col, info_col = st.columns([1.4, 1], gap="medium")
 
 with src_col:
     with ui.card("upload", "Upload a dataset", "CSV or Excel, one row per order line. Up to 200 MB."):
-        uploaded = st.file_uploader(
-            "Sales file", type=["csv", "xlsx", "xls"], key=f"upload-{nonce}",
-            label_visibility="collapsed",
-        )
+        uploaded = upload.file_picker("data")
 
 with info_col:
     with ui.card("active", "Active dataset"):
@@ -52,65 +46,13 @@ with info_col:
 # ==========================================================
 
 if uploaded is not None:
-    data = uploaded.getvalue()
-    try:
-        raw, report = ingest.read_and_clean(data, uploaded.name)
-    except ValueError as exc:
-        st.error(str(exc))
-        st.stop()
-
     st.space("small")
-    ui.stepper(["Upload", "Map columns", "Review"], active=1)
 
-    pending_key = f"{K_PENDING}-{ingest.file_digest(data)}"
-    suggested = st.session_state.setdefault(pending_key, suggest_mapping(raw.columns))
-
-    with ui.card("mapping", "Map your columns",
-                 "We pre-filled what we could recognise. Order date and revenue are required; "
-                 "every other field unlocks more analysis."):
-        options = ["—"] + list(raw.columns)
-        chosen = {}
-        cols = st.columns(3, gap="medium")
-        for i, field in enumerate(FIELDS):
-            current = suggested.get(field.key)
-            with cols[i % 3]:
-                pick = st.selectbox(
-                    field.label + (" *" if field.required else ""),
-                    options,
-                    index=options.index(current) if current in options else 0,
-                    key=f"map-{nonce}-{field.key}",
-                    help=field.help or None,
-                )
-            chosen[field.key] = None if pick == "—" else pick
-
-        problems = validate_mapping(chosen, raw)
-        mapped = sum(1 for v in chosen.values() if v)
-        st.caption(f"{mapped} of {len(FIELDS)} fields mapped · {len(raw):,} rows · {raw.shape[1]} columns")
-
-        with st.expander("Preview the first rows", icon=":material/table_view:"):
-            st.dataframe(raw.head(8), hide_index=True, width="stretch")
-
-        for problem in problems:
-            st.warning(problem, icon=":material/error:")
-
-        left, right = st.columns([1, 1])
-        with right:
-            apply = st.button(
-                "Use this dataset", type="primary", icon=":material/check:",
-                width="stretch", disabled=bool(problems),
-            )
-        with left:
-            if st.button("Cancel", width="stretch"):
-                st.session_state[K_UPLOADER] = nonce + 1
-                st.rerun()
-
-    if apply:
-        state.activate_upload(data, uploaded.name, chosen)
-        st.session_state[K_UPLOADER] = nonce + 1
-        st.session_state.pop(pending_key, None)
-        st.toast(f"{uploaded.name} is now active across all pages.", icon=":material/check_circle:")
+    def _done(name: str) -> None:
+        st.toast(f"{name} is now active across all pages.", icon=":material/check_circle:")
         st.rerun()
 
+    upload.mapping_step(uploaded, "data", on_done=_done)
     st.stop()
 
 

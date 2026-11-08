@@ -28,7 +28,10 @@ UI_DIR = Path(__file__).resolve().parent
 LOGO = UI_DIR / "assets" / "logo.svg"
 
 THEMES = ["Light", "Dark", "System"]
+THEME_ICONS = {"Light": ":material/light_mode:", "Dark": ":material/dark_mode:",
+               "System": ":material/contrast:"}
 K_THEME = "theme"
+K_PATHS = "_page_paths"
 
 
 @dataclass
@@ -57,6 +60,11 @@ def logo() -> None:
     st.logo(str(LOGO), size="large", icon_image=str(LOGO))
 
 
+def set_page_paths(paths: list[str]) -> None:
+    """Called once per run by app.py so the theme toggle knows every page path."""
+    st.session_state[K_PATHS] = paths
+
+
 def _apply_theme(paths: list[str]) -> None:
     """Writes Streamlit's stored theme choice for every page path, then reloads.
 
@@ -77,7 +85,7 @@ def _apply_theme(paths: list[str]) -> None:
     components.html(script, height=0)
 
 
-def sidebar(dataset: Dataset, page_paths: list[str]) -> None:
+def sidebar(dataset: Dataset) -> None:
     df = dataset.df
     filters.reset_if_dataset_changed(dataset.digest)
     filters.apply_pending()
@@ -90,20 +98,36 @@ def sidebar(dataset: Dataset, page_paths: list[str]) -> None:
         )
         st.space("small")
         ui.dataset_chip(dataset.name, len(df), dataset.date_span, dataset.is_sample)
-        st.space("small")
-        ui.section_label("Appearance")
-        st.segmented_control(
-            "Theme", THEMES, key=K_THEME, label_visibility="collapsed",
-            width="stretch", on_change=lambda: st.session_state.__setitem__("_theme_changed", True),
-            bind="query-params",
-        )
-        if st.session_state.pop("_theme_changed", False):
-            _apply_theme(page_paths)
+
+
+def theme_toggle() -> None:
+    """Light / dark / system switch shown at the top right of every page."""
+    st.segmented_control(
+        "Theme", THEMES, key=K_THEME, default="System", label_visibility="collapsed",
+        format_func=THEME_ICONS.get, help="Theme: light, dark or follow your system",
+        on_change=lambda: st.session_state.__setitem__("_theme_changed", True),
+        bind="query-params",
+    )
+    if st.session_state.pop("_theme_changed", False):
+        _apply_theme(st.session_state.get(K_PATHS, ["/"]))
 
 
 # ----------------------------------------------------------
 # Per page
 # ----------------------------------------------------------
+
+def header(title: str, subtitle: str = "", *, df: pd.DataFrame | None = None) -> None:
+    """Page title on the left; date controls (when df is given) and the theme toggle on the right."""
+    right = ui.page_header(title, subtitle)
+    with right:
+        with st.container(horizontal=True, horizontal_alignment="right", gap="small",
+                          vertical_alignment="center"):
+            if df is not None:
+                filters.date_selects()
+            theme_toggle()
+        if df is not None:
+            filters.custom_range(df)
+
 
 def page(title: str, subtitle: str = "", *, needs: tuple[str, ...] = (),
          feature: str = "", date_controls: bool = True) -> PageContext | None:
@@ -115,10 +139,7 @@ def page(title: str, subtitle: str = "", *, needs: tuple[str, ...] = (),
     dataset = state.get_dataset()
     df = dataset.df
 
-    right = ui.page_header(title, subtitle)
-    if date_controls:
-        with right:
-            filters.date_controls(df)
+    header(title, subtitle, df=df if date_controls else None)
 
     missing = missing_for(df, *needs) if needs else []
     if missing:
