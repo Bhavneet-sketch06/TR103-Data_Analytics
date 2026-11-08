@@ -13,7 +13,7 @@ from __future__ import annotations
 import plotly.graph_objects as go
 import streamlit as st
 
-from ui.tokens import OTHER_COLOR, SEQUENTIAL, SERIES, tokens_for
+from ui.tokens import DIVERGING, OTHER_COLOR, SEQUENTIAL, SERIES, tokens_for
 
 PLOTLY_CONFIG = {
     "displaylogo": False,
@@ -51,6 +51,13 @@ def stable_color_map(values, mode: str | None = None) -> dict:
 
 def sequential_scale() -> list[list]:
     ramp = SEQUENTIAL if current_mode() == "light" else list(reversed(SEQUENTIAL))[:-1]
+    n = len(ramp) - 1
+    return [[i / n, c] for i, c in enumerate(ramp)]
+
+
+def diverging_scale() -> list[list]:
+    """Orange (negative) -> gray (zero) -> blue (positive). Pair with a symmetric cmid=0 range."""
+    ramp = DIVERGING[current_mode()]
     n = len(ramp) - 1
     return [[i / n, c] for i, c in enumerate(ramp)]
 
@@ -95,15 +102,15 @@ def style(fig: go.Figure, *, height: int = 320, legend: bool = False,
     return fig
 
 
-def hbar_room(fig: go.Figure, max_value: float) -> go.Figure:
+def hbar_room(fig: go.Figure, max_value: float, room: float = 1.18) -> go.Figure:
     """Leaves space to the right of horizontal bars for their outside labels."""
-    fig.update_xaxes(range=[0, max_value * 1.18] if max_value > 0 else None)
+    fig.update_xaxes(range=[0, max_value * room] if max_value > 0 else None)
     return fig
 
 
 def table_height(rows: int, max_rows: int = 12) -> int:
-    """Height that fits a dataframe exactly (no empty filler rows)."""
-    return 38 + 35 * max(1, min(rows, max_rows))
+    """Height that fits a dataframe exactly (rows are 31px at the 14px base font)."""
+    return 36 + 31 * max(1, min(rows, max_rows))
 
 
 def show(fig: go.Figure, *, key: str | None = None, on_select=None, selection_mode=None):

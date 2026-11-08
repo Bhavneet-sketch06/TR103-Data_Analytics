@@ -85,6 +85,47 @@ def series(df: pd.DataFrame, metric: str = "revenue", grain: str = "Month") -> p
     return frame[metric].resample(freq).sum()
 
 
+def kpi_series(df: pd.DataFrame, key: str, grain: str = "Month") -> pd.Series:
+    """Time series for any key returned by kpis() (used for sparklines)."""
+    freq = GRAIN_FREQ[grain]
+    frame = df.set_index("order_date")
+    if key in ("revenue", "profit", "orders", "customers", "margin"):
+        return series(df, key, grain)
+    if key == "units":
+        return frame["quantity"].resample(freq).sum()
+    if key == "aov":
+        orders = frame["order_id"].resample(freq).nunique()
+        return frame["revenue"].resample(freq).sum() / orders.where(orders != 0)
+    if key in ("discount", "ship_days"):
+        return frame[key].resample(freq).mean()
+    raise KeyError(key)
+
+
+def comparison_series(prev: pd.DataFrame, current: pd.Series, window, metric: str = "revenue",
+                      grain: str = "Month") -> pd.Series:
+    """
+    The comparison period's series moved onto the current period's dates, so
+    both lines share one x-axis. Same-period-last-year shifts by one calendar
+    year (months stay aligned); previous-period shifts by the window length.
+    """
+    if window.compare == "Same period last year":
+        offset = pd.DateOffset(years=1)
+    else:
+        offset = window.start - window.prev_start
+    shifted = prev.assign(order_date=prev["order_date"] + offset)
+    return series(shifted, metric, grain).reindex(current.index)
+
+
+def auto_grain(start: pd.Timestamp, end: pd.Timestamp) -> str:
+    """A sensible default grain for a window length."""
+    days = (end - start).days
+    if days <= 45:
+        return "Day"
+    if days <= 200:
+        return "Week"
+    return "Month"
+
+
 def breakdown(df: pd.DataFrame, dim: str, metric: str = "revenue") -> pd.DataFrame:
     """Revenue/profit/orders by a dimension, sorted by the chosen metric."""
     agg = {"revenue": ("revenue", "sum"), "orders": ("order_id", "nunique")}

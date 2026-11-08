@@ -37,6 +37,7 @@ class PageContext:
     df: pd.DataFrame                 # full dataset (dimension filters NOT applied)
     cur: pd.DataFrame                # current window + dimension filters
     prev: pd.DataFrame | None        # comparison window + dimension filters
+    hist: pd.DataFrame               # all rows up to the window end + dimension filters
     window: filters.Window
 
 
@@ -79,6 +80,7 @@ def _apply_theme(paths: list[str]) -> None:
 def sidebar(dataset: Dataset, page_paths: list[str]) -> None:
     df = dataset.df
     filters.reset_if_dataset_changed(dataset.digest)
+    filters.apply_pending()
     with st.sidebar:
         ui.section_label("Filters")
         filters.dimension_controls(df)
@@ -124,9 +126,9 @@ def page(title: str, subtitle: str = "", *, needs: tuple[str, ...] = (),
         ui.locked_state(feature or title, missing)
         return None
 
-    cur, prev, window = filters.filtered(df)
+    cur, prev, hist, window = filters.filtered(df)
     if date_controls:
         meta = window.label + (f"  ·  {window.compare_short}" if window.compare_short else "")
         st.caption(meta)
     filters.filter_chips()
-    return PageContext(dataset=dataset, df=df, cur=cur, prev=prev, window=window)
+    return PageContext(dataset=dataset, df=df, cur=cur, prev=prev, hist=hist, window=window)
