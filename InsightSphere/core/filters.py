@@ -29,6 +29,8 @@ FILTER_DIMS = ["region", "category", "segment"]
 K_PRESET, K_CUSTOM, K_COMPARE = "range", "custom", "compare"
 K_DIM = {dim: f"f_{dim}" for dim in FILTER_DIMS}
 K_DIGEST = "_filters_for_digest"
+K_PENDING = "_pending_filters"
+K_SEL_NONCE = "_selection_nonce"
 
 
 @dataclass(frozen=True)
@@ -135,6 +137,31 @@ def selections() -> dict:
     return {dim: st.session_state.get(key, []) or [] for dim, key in K_DIM.items()}
 
 
+# Cross-filtering. A chart click can't write to the sidebar multiselects
+# directly (they were already drawn this run), so the value is queued, the
+# app reruns, and the queue is applied before the widgets are drawn. Bumping
+# the nonce gives selectable charts a fresh key, which clears their selection.
+
+def queue_filter(dim: str, values) -> None:
+    pending = st.session_state.setdefault(K_PENDING, [])
+    pending.extend((dim, str(v)) for v in values)
+    st.session_state[K_SEL_NONCE] = st.session_state.get(K_SEL_NONCE, 0) + 1
+
+
+def apply_pending() -> None:
+    for dim, value in st.session_state.pop(K_PENDING, []):
+        key = K_DIM.get(dim)
+        if key is None:
+            continue
+        current = list(st.session_state.get(key, []) or [])
+        if value not in current:
+            st.session_state[key] = current + [value]
+
+
+def selection_nonce() -> int:
+    return st.session_state.get(K_SEL_NONCE, 0)
+
+
 def current_window(df: pd.DataFrame) -> Window:
     return compute_window(
         st.session_state.get(K_PRESET, DEFAULT_PRESET),
@@ -144,13 +171,18 @@ def current_window(df: pd.DataFrame) -> Window:
     )
 
 
-def filtered(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame | None, Window]:
-    """(current-period rows, comparison-period rows or None, window)."""
+def filtered(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame | None, pd.DataFrame, Window]:
+    """
+    (current-period rows, comparison-period rows or None, history, window).
+    History is every row up to the window end, with dimension filters, for
+    sparklines and anything that needs a customer's full past.
+    """
     window = current_window(df)
     dims = apply_dimension_filters(df, selections())
     current = slice_window(dims, window.start, window.end)
     previous = slice_window(dims, window.prev_start, window.prev_end) if window.prev_start is not None else None
-    return current, previous, window
+    history = dims[dims["order_date"] <= window.end]
+    return current, previous, history, window
 
 
 # ----------------------------------------------------------

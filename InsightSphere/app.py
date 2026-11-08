@@ -40,10 +40,10 @@ def _coming_soon(title: str):
 
 PAGES = {
     "Analytics": [
-        st.Page(_coming_soon("Overview"), title="Overview", icon=":material/space_dashboard:",
+        st.Page("views/overview.py", title="Overview", icon=":material/space_dashboard:",
                 url_path="overview", default=True),
-        st.Page(_coming_soon("Sales"), title="Sales", icon=":material/sell:", url_path="sales"),
-        st.Page(_coming_soon("Customers"), title="Customers", icon=":material/group:", url_path="customers"),
+        st.Page("views/sales.py", title="Sales", icon=":material/sell:", url_path="sales"),
+        st.Page("views/customers.py", title="Customers", icon=":material/group:", url_path="customers"),
         st.Page(_coming_soon("Regions"), title="Regions", icon=":material/public:", url_path="regions"),
         st.Page(_coming_soon("Operations"), title="Operations", icon=":material/local_shipping:",
                 url_path="operations"),
