@@ -82,7 +82,7 @@ if mover_dims:
             table = metrics.top_movers(cur, prev, dim, "revenue", n=10)
             table["change_pct"] = table["change_pct"] * 100
             config = {
-                dim: st.column_config.TextColumn(label, width="large"),
+                dim: st.column_config.TextColumn(label, width="medium"),
                 "current": st.column_config.NumberColumn("Revenue", format="dollar"),
                 "previous": st.column_config.NumberColumn(f"Revenue ({window.compare_short.replace('vs ', '')})",
                                                           format="dollar"),
@@ -94,7 +94,7 @@ if mover_dims:
             table = table[[c for c in (dim, "revenue", "profit", "margin", "share") if c in table]]
             table = blocks.as_percent(table, "margin")
             config = {
-                dim: st.column_config.TextColumn(label, width="large"),
+                dim: st.column_config.TextColumn(label, width="medium"),
                 "revenue": st.column_config.NumberColumn("Revenue", format="dollar"),
                 "profit": st.column_config.NumberColumn("Profit", format="dollar"),
                 "margin": blocks.pct_column("Margin"),

@@ -150,3 +150,28 @@ def test_comparison_series_is_aligned_to_current_months(sample):
     compared = metrics.comparison_series(prev, current, w, "revenue", "Month")
     assert list(compared.index) == list(current.index)
     assert compared.sum() == pytest.approx(prev["revenue"].sum())
+
+
+# ----------------------------------------------------------
+# Highlights + KPI series
+# ----------------------------------------------------------
+
+def test_highlights_lead_with_revenue_and_quote_real_numbers(sample):
+    from core import insights
+    w = filters.compute_window("Last 12 months", "Same period last year",
+                               sample["order_date"].min(), sample["order_date"].max())
+    cur = filters.slice_window(sample, w.start, w.end)
+    prev = filters.slice_window(sample, w.prev_start, w.prev_end)
+    items = insights.highlights(cur, prev, "vs LY")
+    growth = (cur["revenue"].sum() - prev["revenue"].sum()) / prev["revenue"].sum()
+    assert items[0]["title"] == f"Revenue up {growth * 100:.1f}% vs LY"
+    assert all(i["tone"] in {"good", "bad", "warn", "info"} for i in items)
+    assert insights.highlights(cur, None, "vs LY") == []
+
+
+def test_kpi_series_matches_kpis_month_by_month(sample):
+    jan = sample[sample["order_date"].dt.to_period("M") == "2017-01"]
+    aov = metrics.kpi_series(sample, "aov").loc["2017-01-01"]
+    assert aov == pytest.approx(metrics.kpis(jan)["aov"].value)
+    units = metrics.kpi_series(sample, "units").loc["2017-01-01"]
+    assert units == pytest.approx(jan["quantity"].sum())
