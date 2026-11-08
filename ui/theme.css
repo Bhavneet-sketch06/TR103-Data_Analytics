@@ -308,3 +308,12 @@ hr { border-color: var(--is-border) !important; margin: 0.5rem 0 1rem !important
   [data-testid="stMainBlockContainer"] { padding: 1.25rem 1rem 3rem; }
   .is-kpi-value { font-size: 22px; }
 }
+
+/* Section heading between groups of cards */
+.is-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--is-text);
+  margin: 4px 0 -2px;
+}

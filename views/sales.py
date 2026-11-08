@@ -43,9 +43,12 @@ with left:
             grouped = cur.groupby(levels, observed=True).agg(
                 revenue=("revenue", "sum"), **({"profit": ("profit", "sum")} if "profit" in has else {}),
             ).reset_index()
-            ids, parents, labels, values, margins = [], [], [], [], []
+            # An explicit root keeps plotly from painting its implicit root a fixed dark gray.
+            total_margin = (grouped["profit"].sum() / grouped["revenue"].sum()) if "profit" in has else None
+            ids, parents, labels = ["all"], [""], ["All categories"]
+            values, margins = [grouped["revenue"].sum()], [total_margin]
             for cat, part in grouped.groupby("category", observed=True):
-                ids.append(str(cat)); parents.append(""); labels.append(str(cat))
+                ids.append(str(cat)); parents.append("all"); labels.append(str(cat))
                 values.append(part["revenue"].sum())
                 margins.append(part["profit"].sum() / part["revenue"].sum() if "profit" in part else None)
                 if "sub_category" in levels:
@@ -68,7 +71,6 @@ with left:
                 trace["hovertemplate"] = "<b>%{label}</b><br>Revenue %{value:$,.0f}<br>Margin %{customdata:.1%}<extra></extra>"
             else:
                 trace["hovertemplate"] = "<b>%{label}</b><br>Revenue %{value:$,.0f}<extra></extra>"
-            trace["root_color"] = t["surface"]
             fig = go.Figure(go.Treemap(**trace))
             charts.style(fig, height=380, hovermode="closest")
             fig.update_layout(margin=dict(l=0, r=0, t=4, b=0))
@@ -109,16 +111,16 @@ st.space("small")
 left, right = st.columns([7, 5], gap="medium")
 
 with left:
-    with ui.card("sales-season", "Seasonality", "Monthly revenue by year, all history. Darker = more revenue."):
+    with ui.card("sales-season", "Seasonality", "Monthly revenue by year, all history. Stronger blue = more revenue."):
         season = products.seasonality(ctx.hist)
         z = season.values
         text = [[charts.money(v) if pd.notna(v) else "" for v in row] for row in z]
+        x, y = [str(c) for c in season.columns], [calendar.month_abbr[m] for m in season.index]
         fig = go.Figure(go.Heatmap(
-            z=z, x=[str(c) for c in season.columns], y=[calendar.month_abbr[m] for m in season.index],
-            text=text, texttemplate="%{text}", textfont=dict(size=11),
-            colorscale=charts.sequential_scale(), showscale=False, xgap=2, ygap=2,
+            z=z, x=x, y=y, colorscale=charts.sequential_scale(), showscale=False, xgap=2, ygap=2,
             hovertemplate="%{y} %{x}: %{z:$,.0f}<extra></extra>",
         ))
+        charts.heatmap_labels(fig, x, y, z, text)
         charts.style(fig, height=380, hovermode="closest")
         fig.update_yaxes(autorange="reversed", showgrid=False)
         fig.update_xaxes(side="top", type="category")
@@ -135,7 +137,7 @@ with right:
                 st.dataframe(
                     blocks.as_percent(losses, "margin", "avg_discount"), hide_index=True, width="stretch",
                     height=charts.table_height(len(losses), 10),
-                    column_order=[c for c in ("product", "profit", "margin", "avg_discount") if c in losses],
+                    column_order=["product", "profit", "margin"],
                     column_config={
                         "product": st.column_config.TextColumn("Product", width="medium"),
                         "profit": st.column_config.NumberColumn("Profit", format="dollar", width="small"),

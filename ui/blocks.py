@@ -158,7 +158,7 @@ def rank_bars(table: pd.DataFrame, dim: str, value: str = "revenue", *, color_ma
     fig.update_yaxes(showgrid=False, autorange="reversed", ticksuffix="  ")
     fig.update_xaxes(showgrid=True, gridcolor=t["grid"])
     if len(data) and data[value].min() >= 0:
-        charts.hbar_room(fig, float(data[value].max()), room=1.6 if note else 1.18)
+        charts.hbar_room(fig, float(data[value].max()), room=1.8 if note else 1.18)
     return fig
 
 

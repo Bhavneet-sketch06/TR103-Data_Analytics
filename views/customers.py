@@ -130,12 +130,13 @@ with ui.card("cust-cohorts", "Retention by cohort",
         shown = z.copy()
         shown[:, 0] = float("nan")          # period 0 is always 100%; keep it out of the color scale
         text = [[("" if pd.isna(v) else f"{v:.0%}") for v in row] for row in z]
+        x = [str(a) for a in ages]
         fig = go.Figure(go.Heatmap(
-            z=shown, x=[str(a) for a in ages], y=labels, text=text, texttemplate="%{text}",
-            textfont=dict(size=11), colorscale=charts.sequential_scale(), showscale=False,
+            z=shown, x=x, y=labels, text=text, colorscale=charts.sequential_scale(), showscale=False,
             xgap=2, ygap=2, hoverongaps=False,
             hovertemplate=f"%{{y}}<br>{unit.title()} %{{x}}: %{{text}} active<extra></extra>",
         ))
+        charts.heatmap_labels(fig, x, labels, shown, text)
         charts.style(fig, height=34 * len(labels) + 60, hovermode="closest")
         fig.update_yaxes(autorange="reversed", showgrid=False, type="category")
         fig.update_xaxes(side="top", type="category", title_text=f"{unit.title()}s since first order",

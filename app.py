@@ -44,8 +44,8 @@ PAGES = {
                 url_path="overview", default=True),
         st.Page("views/sales.py", title="Sales", icon=":material/sell:", url_path="sales"),
         st.Page("views/customers.py", title="Customers", icon=":material/group:", url_path="customers"),
-        st.Page(_coming_soon("Regions"), title="Regions", icon=":material/public:", url_path="regions"),
-        st.Page(_coming_soon("Operations"), title="Operations", icon=":material/local_shipping:",
+        st.Page("views/regions.py", title="Regions", icon=":material/public:", url_path="regions"),
+        st.Page("views/operations.py", title="Operations", icon=":material/local_shipping:",
                 url_path="operations"),
     ],
     "Intelligence": [
@@ -56,9 +56,6 @@ PAGES = {
         st.Page("views/data.py", title="Data", icon=":material/database:", url_path="data"),
         st.Page(_coming_soon("Forecast runs"), title="Forecast runs", icon=":material/history:",
                 url_path="forecast-runs"),
-    ],
-    "Preview": [
-        st.Page("views/gallery.py", title="Design system", icon=":material/palette:", url_path="design-system"),
     ],
 }
 

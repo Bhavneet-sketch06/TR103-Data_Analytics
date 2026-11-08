@@ -55,6 +55,43 @@ def sequential_scale() -> list[list]:
     return [[i / n, c] for i, c in enumerate(ramp)]
 
 
+def _luminance(hex_color: str) -> float:
+    r, g, b = (int(hex_color.lstrip("#")[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    lin = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4 for c in (r, g, b)]
+    return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+
+
+def heatmap_labels(fig: go.Figure, x, y, z, text) -> go.Figure:
+    """
+    Cell labels whose color follows each cell's fill: dark ink on light cells,
+    white on dark ones. Plotly's heatmap text uses one color for every cell,
+    which becomes unreadable on part of the ramp in one of the two themes.
+    Cells with no value (NaN) get their text in the muted color.
+    """
+    import numpy as np
+
+    values = np.asarray(z, dtype=float)
+    lo, hi = np.nanmin(values), np.nanmax(values)
+    scale = sequential_scale()
+    ink = tokens_for(current_mode())
+    for i in range(len(y)):
+        for j in range(len(x)):
+            label = text[i][j]
+            if not label:
+                continue
+            v = values[i, j]
+            if np.isnan(v):
+                color = ink["text_2"]
+            else:
+                pos = 0.0 if hi == lo else (v - lo) / (hi - lo)
+                fill = scale[min(int(round(pos * (len(scale) - 1))), len(scale) - 1)][1]
+                color = "#111114" if _luminance(fill) > 0.32 else "#FFFFFF"
+            # Positions by index: on a category axis a numeric-looking name such as
+            # "2014" would be read as an index, so names aren't safe.
+            fig.add_annotation(x=j, y=i, text=label, showarrow=False, font=dict(size=11, color=color))
+    return fig
+
+
 def diverging_scale() -> list[list]:
     """Orange (negative) -> gray (zero) -> blue (positive). Pair with a symmetric cmid=0 range."""
     ramp = DIVERGING[current_mode()]
