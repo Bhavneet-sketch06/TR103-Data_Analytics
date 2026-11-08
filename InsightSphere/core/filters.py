@@ -189,21 +189,24 @@ def filtered(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame | None, pd.Da
 # Widgets
 # ----------------------------------------------------------
 
-def date_controls(df: pd.DataFrame) -> None:
-    """Date preset + comparison, rendered in the page header's right column."""
+def date_selects() -> None:
+    """Date preset + comparison selectboxes (the caller places them in a row)."""
     _init(K_PRESET, DEFAULT_PRESET)
     _init(K_COMPARE, DEFAULT_COMPARE)
-    with st.container(horizontal=True, horizontal_alignment="right", gap="small"):
-        st.selectbox(
-            "Date range", PRESETS, key=K_PRESET,
-            label_visibility="collapsed", width=170,
-            bind="query-params", persist_state="session",
-        )
-        st.selectbox(
-            "Compare to", COMPARE, key=K_COMPARE,
-            label_visibility="collapsed", width=200,
-            bind="query-params", persist_state="session",
-        )
+    st.selectbox(
+        "Date range", PRESETS, key=K_PRESET,
+        label_visibility="collapsed", width=170,
+        bind="query-params", persist_state="session",
+    )
+    st.selectbox(
+        "Compare to", COMPARE, key=K_COMPARE,
+        label_visibility="collapsed", width=200,
+        bind="query-params", persist_state="session",
+    )
+
+
+def custom_range(df: pd.DataFrame) -> None:
+    """Date picker shown under the header when the preset is Custom."""
     if st.session_state.get(K_PRESET) == "Custom":
         lo, hi = df["order_date"].min().date(), df["order_date"].max().date()
         st.date_input(

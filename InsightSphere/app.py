@@ -27,7 +27,7 @@ shell.logo()
 def _coming_soon(title: str):
     """Placeholder page for views that land in a later build phase."""
     def render():
-        ui.page_header(title, "Part of the next build phase.")
+        shell.header(title, "Part of the next build phase.")
         st.space("small")
         ui.empty_state(
             f"{title} is being rebuilt",
@@ -39,9 +39,12 @@ def _coming_soon(title: str):
 
 
 PAGES = {
+    "": [
+        st.Page("views/home.py", title="Home", icon=":material/home:", default=True),
+    ],
     "Analytics": [
         st.Page("views/overview.py", title="Overview", icon=":material/space_dashboard:",
-                url_path="overview", default=True),
+                url_path="overview"),
         st.Page("views/sales.py", title="Sales", icon=":material/sell:", url_path="sales"),
         st.Page("views/customers.py", title="Customers", icon=":material/group:", url_path="customers"),
         st.Page("views/regions.py", title="Regions", icon=":material/public:", url_path="regions"),
@@ -61,7 +64,8 @@ PAGES = {
 
 page = st.navigation(PAGES, position="sidebar")
 
-page_paths = ["/"] + ["/" + p.url_path for section in PAGES.values() for p in section]
-shell.sidebar(state.get_dataset(), page_paths)
+shell.set_page_paths(sorted({"/" + p.url_path for section in PAGES.values() for p in section}))
+if page.title != "Home":  # the landing page has no app sidebar
+    shell.sidebar(state.get_dataset())
 
 page.run()

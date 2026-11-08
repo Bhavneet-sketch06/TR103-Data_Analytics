@@ -317,3 +317,127 @@ hr { border-color: var(--is-border) !important; margin: 0.5rem 0 1rem !important
   color: var(--is-text);
   margin: 4px 0 -2px;
 }
+
+/* ==========================================================
+   Landing page (views/home.py)
+   ========================================================== */
+
+[data-testid="stMarkdownContainer"]:has(> .is-brand, > .is-hero, > .is-hero-note, > .is-preview,
+  > .is-home-eyebrow, > .is-checks, > .is-feature, > .is-footer) { margin: 0; }
+
+.is-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 17px; font-weight: 650; letter-spacing: -0.015em; color: var(--is-text);
+}
+.is-brand-logo svg { width: 30px; height: 30px; display: block; }
+
+.is-hero-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 999px;
+  background: var(--is-accent-soft); color: var(--is-accent-text);
+  font-size: 12.5px; font-weight: 550;
+}
+.is-hero .is-hero-title {
+  font-size: clamp(46px, 5.6vw, 76px); font-weight: 750; line-height: 1.0;
+  letter-spacing: -0.04em; color: var(--is-text);
+  margin: 20px 0 18px; padding: 0;
+}
+.is-hero .is-hero-accent { color: var(--is-accent); }
+.is-hero-sub {
+  font-size: 17.5px; line-height: 1.6; color: var(--is-text-2);
+  max-width: 500px; margin-bottom: 26px;
+}
+.st-key-hero-cta button { min-height: 46px; padding: 0 22px; border-radius: 10px; }
+.st-key-hero-cta button p { font-size: 15px; font-weight: 550; }
+.is-hero-note {
+  display: flex; align-items: center; gap: 6px; margin-top: 14px;
+  font-size: 12.5px; color: var(--is-text-3);
+}
+
+.is-preview {
+  background: var(--is-surface); border: 1px solid var(--is-border); border-radius: 16px;
+  padding: 18px 20px 14px; box-shadow: var(--is-shadow);
+}
+.is-preview-head {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+  font-size: 12.5px; font-weight: 600; color: var(--is-text-2);
+}
+.is-live-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--is-good);
+  box-shadow: 0 0 0 3px var(--is-good-soft);
+}
+.is-preview-src {
+  margin-left: auto; font-weight: 500; color: var(--is-text-3);
+  max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.is-preview-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.is-preview-tile {
+  background: var(--is-surface-2); border: 1px solid var(--is-border); border-radius: 12px;
+  padding: 10px 12px;
+}
+.is-preview-label { font-size: 12px; color: var(--is-text-2); }
+.is-preview-value {
+  font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--is-text);
+  margin: 2px 0 4px; font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.is-preview-chart-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 16px 0 6px; font-size: 12.5px; font-weight: 600; color: var(--is-text-2);
+}
+.is-preview-legend { display: flex; align-items: center; gap: 6px; font-weight: 500; color: var(--is-text-3); }
+.is-preview-legend i { display: inline-block; width: 14px; height: 0; margin-left: 6px; }
+.is-preview-legend i.solid { border-top: 2.5px solid var(--is-accent); }
+.is-preview-legend i.dotted { border-top: 2px dashed var(--is-text-3); }
+.is-preview-axis {
+  display: flex; justify-content: space-between; margin-top: 4px;
+  font-size: 11.5px; color: var(--is-text-3);
+}
+
+.is-home-eyebrow {
+  font-size: 12px; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--is-accent-text); margin-bottom: 6px;
+}
+.is-home-title { font-size: 30px; font-weight: 700; letter-spacing: -0.025em; color: var(--is-text); }
+.is-home-sub { font-size: 15.5px; color: var(--is-text-2); margin-top: 6px; max-width: 640px; line-height: 1.55; }
+
+.is-checks { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 4px; }
+.is-checks span { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--is-text-2); }
+.is-checks svg { color: var(--is-good); }
+
+.is-feature-icon {
+  width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  background: var(--is-accent-soft); color: var(--is-accent-text); margin-bottom: 14px;
+}
+.is-feature-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 15.5px; font-weight: 650; color: var(--is-text); margin-bottom: 4px;
+}
+.is-feature-body { font-size: 13.5px; line-height: 1.55; color: var(--is-text-2); min-height: 42px; }
+[class*="st-key-card-feature"] [data-testid="stPageLink"] a { padding-left: 0; }
+[class*="st-key-card-feature"] [data-testid="stPageLink"] p { font-size: 13.5px; font-weight: 550; color: var(--is-accent-text); }
+
+.is-footer {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  padding-top: 18px; border-top: 1px solid var(--is-border);
+  font-size: 12.5px; color: var(--is-text-3);
+}
+.is-footer a { color: var(--is-text-2) !important; text-decoration: none; }
+.is-footer a:hover { color: var(--is-accent) !important; }
+
+/* Big drop zone on the landing page */
+.st-key-card-home-upload [data-testid="stFileUploaderDropzone"] {
+  min-height: 170px; flex-direction: column; justify-content: center; align-items: center;
+  gap: 12px; text-align: center;
+  border: 1.5px dashed var(--is-border-strong); border-radius: 14px;
+  background: var(--is-surface-2);
+}
+.st-key-card-home-upload [data-testid="stFileUploaderDropzone"]::before {
+  content: "Drag and drop your sales file here";
+  font-size: 16px; font-weight: 600; color: var(--is-text);
+}
+.st-key-card-home-upload [data-testid="stFileUploaderDropzone"]:hover { border-color: var(--is-accent); }
+
+/* Primary buttons: text color that reads on the accent in both themes */
+[data-testid="stBaseButton-primary"],
+[data-testid="stBaseButton-primary"] p { color: var(--is-on-accent) !important; }
+.st-key-card-home-upload [data-testid="stFileUploaderDropzone"] > * { margin: 0 auto; }
