@@ -143,7 +143,7 @@ def config_toml() -> str:
     return f"""# Generated from ui/tokens.py — run `python -m ui.tokens` after changing tokens.
 
 [server]
-headless = true
+headless = false
 runOnSave = false
 
 [client]
