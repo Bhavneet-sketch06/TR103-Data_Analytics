@@ -441,3 +441,9 @@ hr { border-color: var(--is-border) !important; margin: 0.5rem 0 1rem !important
 [data-testid="stBaseButton-primary"],
 [data-testid="stBaseButton-primary"] p { color: var(--is-on-accent) !important; }
 .st-key-card-home-upload [data-testid="stFileUploaderDropzone"] > * { margin: 0 auto; }
+
+/* Helper containers (scripts, the theme sync button) never take up space */
+[class*="st-key-hidden-"],
+:where([data-testid="stHorizontalBlock"], [data-testid="stVerticalBlock"]) > :has(> [class*="st-key-hidden-"]) {
+  display: none !important;
+}

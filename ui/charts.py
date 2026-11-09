@@ -23,7 +23,15 @@ PLOTLY_CONFIG = {
 
 
 def current_mode() -> str:
-    """'light' or 'dark' as reported by the browser (falls back to light)."""
+    """
+    'light' or 'dark'. An explicit choice in the header's theme switch wins,
+    because the switch changes the theme without a reload and the browser's
+    report (st.context.theme) only catches up on the next rerun. For System
+    it falls back to that report, then to light.
+    """
+    choice = st.session_state.get("theme")   # ui.shell.K_THEME
+    if choice in ("Light", "Dark"):
+        return choice.lower()
     try:
         return "dark" if st.context.theme.type == "dark" else "light"
     except Exception:
