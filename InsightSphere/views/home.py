@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import pandas as pd
 import streamlit as st
-import streamlit.components.v1 as components
 
 from core import filters, metrics, state
 from ui import charts, shell, upload
@@ -158,11 +157,19 @@ if uploaded is not None:
     upload.mapping_step(uploaded, "home", on_done=lambda _: st.switch_page("views/overview.py"))
 
 if st.session_state.pop("_home-scroll", False):
-    components.html(
-        "<script>const el = window.parent.document.querySelector('.st-key-card-home-upload');"
-        "if (el) el.scrollIntoView({behavior: 'smooth', block: 'center'});</script>",
-        height=0,
-    )
+    with st.container(key="hidden-home-scroll"):
+        # Smooth scroll, with an instant fallback for tabs that skip the animation.
+        st.html("""<script>
+(() => {
+  const el = document.querySelector('.st-key-card-home-upload');
+  if (!el) return;
+  const start = el.getBoundingClientRect().top;
+  el.scrollIntoView({behavior: 'smooth', block: 'center'});
+  setTimeout(() => {
+    if (Math.abs(el.getBoundingClientRect().top - start) < 2) el.scrollIntoView({block: 'center'});
+  }, 600);
+})();
+</script>""", unsafe_allow_javascript=True)
 
 # ----------------------------------------------------------
 # What you get
