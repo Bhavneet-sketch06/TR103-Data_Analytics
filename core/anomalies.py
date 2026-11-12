@@ -28,6 +28,7 @@ DIMS = ("category", "region", "segment")
 THRESHOLD = 3.5
 MIN_MONTHS = 12
 MIN_SHARE = 0.05          # skip slices too small for a stable monthly series
+MIN_MONTHLY_ORDERS = 15   # ...or with so few orders a month that one big order looks "unusual"
 
 
 def complete_months(df: pd.DataFrame) -> pd.DataFrame:
@@ -107,6 +108,9 @@ def detect(history: pd.DataFrame, start, end, dims=DIMS, metrics_=("revenue", "m
                 continue
             y = _monthly(part, metric).dropna()
             if len(y) < MIN_MONTHS:
+                continue
+            orders = part.groupby(part["order_date"].dt.to_period("M"))["order_id"].nunique()
+            if orders.median() < MIN_MONTHLY_ORDERS:
                 continue
             expected = expected_values(y, metric)
             z = robust_z(misses(y, expected, metric))

@@ -14,7 +14,7 @@ from ui import shell, upload
 from ui.charts import compact
 
 dataset = state.get_dataset()
-df = dataset.df
+df = dataset.df if dataset is not None else None
 
 shell.header("Data", "Upload a sales file, map its columns, and check its health.")
 st.space("small")
@@ -32,14 +32,22 @@ with src_col:
 
 with info_col:
     with ui.card("active", "Active dataset"):
-        ui.dataset_chip(dataset.name, len(df), dataset.date_span, dataset.is_sample)
-        st.space("xsmall")
-        if not dataset.is_sample:
-            if st.button("Switch to sample data", icon=":material/undo:", width="stretch"):
+        if dataset is None:
+            ui.render('<div class="is-dataset"><div class="is-dataset-icon">' + ui.icon("database", 15)
+                      + '</div><div><div class="is-dataset-name">No data loaded</div>'
+                      '<div class="is-dataset-meta">Every page fills in after you upload a file.</div></div></div>')
+            st.space("xsmall")
+            if st.button("Try sample data", icon=":material/science:", width="stretch",
+                         help="Loads the bundled Superstore sample so you can explore the app."):
                 state.use_sample()
                 st.rerun()
         else:
-            st.caption("Upload your own file to replace the sample across every page.")
+            ui.dataset_chip(dataset.name, len(df), dataset.date_span, dataset.is_sample)
+            st.space("xsmall")
+            if st.button("Remove dataset", icon=":material/close:", width="stretch",
+                         help="Clears it from every page. Upload another file to continue."):
+                state.clear()
+                st.rerun()
 
 # ==========================================================
 # 2. MAP COLUMNS (only while an upload is pending)
@@ -53,6 +61,9 @@ if uploaded is not None:
         st.rerun()
 
     upload.mapping_step(uploaded, "data", on_done=_done)
+    st.stop()
+
+if dataset is None:
     st.stop()
 
 

@@ -447,3 +447,17 @@ hr { border-color: var(--is-border) !important; margin: 0.5rem 0 1rem !important
 :where([data-testid="stHorizontalBlock"], [data-testid="stVerticalBlock"]) > :has(> [class*="st-key-hidden-"]) {
   display: none !important;
 }
+
+/* Landing preview before any data is loaded */
+.is-idle-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--is-text-3);
+  box-shadow: 0 0 0 3px var(--is-surface-2);
+}
+.is-skeleton { background: var(--is-border); border-radius: 6px; }
+.is-skeleton-value { height: 22px; width: 70%; margin: 6px 0 8px; }
+.is-skeleton-badge { height: 16px; width: 42%; border-radius: 999px; }
+.is-preview-empty { position: relative; }
+.is-preview-empty-text {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 13px; font-weight: 500; color: var(--is-text-3);
+}

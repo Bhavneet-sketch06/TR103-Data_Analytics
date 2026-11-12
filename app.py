@@ -37,7 +37,7 @@ PAGES = {
                 url_path="operations"),
     ],
     "Planning": [
-        st.Page("views/planning.py", title="Forecast", icon=":material/insights:", url_path="forecast"),
+        st.Page("views/forecast.py", title="Forecast", icon=":material/insights:", url_path="forecast"),
     ],
     "Data": [
         st.Page("views/data.py", title="Data", icon=":material/database:", url_path="data"),

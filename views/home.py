@@ -9,8 +9,7 @@ from core import filters, metrics, state
 from ui import charts, shell, upload
 from ui import components as ui
 
-dataset = state.get_dataset()
-df = dataset.df
+dataset = state.get_dataset()        # None until a file is uploaded (or the sample is chosen)
 
 # A landing page reads as a website: no app sidebar, a narrower column.
 st.html("""<style>
@@ -56,10 +55,11 @@ with text_col:
         "</div>"
     )
     with st.container(key="hero-cta", horizontal=True, gap="small"):
-        if dataset.is_sample:
+        if dataset is None:
             st.button("Upload your data", type="primary", icon=":material/upload:", on_click=_scroll_to_upload,
                       key="cta-upload")
-            if st.button("Explore sample data", icon=":material/arrow_forward:", key="cta-sample"):
+            if st.button("Try sample data", icon=":material/arrow_forward:", key="cta-sample"):
+                state.use_sample()
                 st.switch_page("views/overview.py")
         else:
             if st.button(f"Continue with {dataset.name}", type="primary", icon=":material/arrow_forward:",
@@ -101,36 +101,62 @@ def _trend_svg(current: pd.Series, previous: pd.Series | None, width: int = 520,
     return "".join(svg)
 
 
-with preview_col:
-    window = filters.compute_window("Last 12 months", "Same period last year",
-                                    df["order_date"].min(), df["order_date"].max())
-    cur = filters.slice_window(df, window.start, window.end)
-    prev = filters.slice_window(df, window.prev_start, window.prev_end) if window.prev_start is not None else None
-    now = metrics.kpis(cur)
-    before = metrics.kpis(prev) if prev is not None and not prev.empty else {}
-    tiles = []
-    for key in [k for k in ("revenue", "profit", "orders", "customers") if k in now][:3]:
-        k = now[key]
-        value = charts.money(k.value) if k.fmt == "money" else f"{k.value:,.0f}"
-        badge = ui.delta_badge(metrics.change(k, before.get(key)), higher_is_better=k.higher_is_better) \
-            if key in before else ""
-        tiles.append(f'<div class="is-preview-tile"><div class="is-preview-label">{ui.esc(k.label)}</div>'
-                     f'<div class="is-preview-value">{ui.esc(value)}</div>{badge}</div>')
-    current = metrics.series(cur, "revenue")
-    compared = metrics.comparison_series(prev, current, window) if prev is not None and not prev.empty else None
-    first, last = current.index[0], current.index[-1]
-    ui.render(
-        '<div class="is-preview">'
-        '<div class="is-preview-head"><span class="is-live-dot"></span>Live preview'
-        f'<span class="is-preview-src">{ui.esc(dataset.name)}</span></div>'
-        f'<div class="is-preview-tiles">{"".join(tiles)}</div>'
-        '<div class="is-preview-chart-head"><span>Revenue, last 12 months</span>'
-        '<span class="is-preview-legend"><i class="solid"></i>This year'
-        + ('<i class="dotted"></i>Last year' if compared is not None else "") + "</span></div>"
-        + _trend_svg(current, compared)
-        + f'<div class="is-preview-axis"><span>{first:%b %Y}</span><span>{last:%b %Y}</span></div>'
-        "</div>"
+def _placeholder_preview() -> str:
+    """The preview card before any data: labelled blanks, no numbers."""
+    tiles = "".join(
+        f'<div class="is-preview-tile"><div class="is-preview-label">{label}</div>'
+        '<div class="is-skeleton is-skeleton-value"></div><div class="is-skeleton is-skeleton-badge"></div></div>'
+        for label in ("Revenue", "Profit", "Orders")
     )
+    grid = "".join(f'<line x1="0" x2="520" y1="{y}" y2="{y}" style="stroke:var(--is-grid)" stroke-width="1"/>'
+                   for y in (41, 75, 109))
+    return (
+        '<div class="is-preview">'
+        '<div class="is-preview-head"><span class="is-idle-dot"></span>Preview'
+        '<span class="is-preview-src">waiting for your file</span></div>'
+        f'<div class="is-preview-tiles">{tiles}</div>'
+        '<div class="is-preview-chart-head"><span>Revenue, last 12 months</span></div>'
+        '<div class="is-preview-empty">'
+        f'<svg viewBox="0 0 520 150" width="100%" height="150" preserveAspectRatio="none" aria-hidden="true">{grid}</svg>'
+        f'<div class="is-preview-empty-text">{ui.icon("upload", 16)}Your KPIs and trend appear here after you upload</div>'
+        "</div></div>"
+    )
+
+
+with preview_col:
+    if dataset is None:
+        ui.render(_placeholder_preview())
+    else:
+        df = dataset.df
+        window = filters.compute_window("Last 12 months", "Same period last year",
+                                        df["order_date"].min(), df["order_date"].max())
+        cur = filters.slice_window(df, window.start, window.end)
+        prev = filters.slice_window(df, window.prev_start, window.prev_end) if window.prev_start is not None else None
+        now = metrics.kpis(cur)
+        before = metrics.kpis(prev) if prev is not None and not prev.empty else {}
+        tiles = []
+        for key in [k for k in ("revenue", "profit", "orders", "customers") if k in now][:3]:
+            k = now[key]
+            value = charts.money(k.value) if k.fmt == "money" else f"{k.value:,.0f}"
+            badge = ui.delta_badge(metrics.change(k, before.get(key)), higher_is_better=k.higher_is_better) \
+                if key in before else ""
+            tiles.append(f'<div class="is-preview-tile"><div class="is-preview-label">{ui.esc(k.label)}</div>'
+                         f'<div class="is-preview-value">{ui.esc(value)}</div>{badge}</div>')
+        current = metrics.series(cur, "revenue")
+        compared = metrics.comparison_series(prev, current, window) if prev is not None and not prev.empty else None
+        first, last = current.index[0], current.index[-1]
+        ui.render(
+            '<div class="is-preview">'
+            '<div class="is-preview-head"><span class="is-live-dot"></span>Live preview'
+            f'<span class="is-preview-src">{ui.esc(dataset.name)}</span></div>'
+            f'<div class="is-preview-tiles">{"".join(tiles)}</div>'
+            '<div class="is-preview-chart-head"><span>Revenue, last 12 months</span>'
+            '<span class="is-preview-legend"><i class="solid"></i>This year'
+            + ('<i class="dotted"></i>Last year' if compared is not None else "") + "</span></div>"
+            + _trend_svg(current, compared)
+            + f'<div class="is-preview-axis"><span>{first:%b %Y}</span><span>{last:%b %Y}</span></div>'
+            "</div>"
+        )
 
 # ----------------------------------------------------------
 # Upload
@@ -187,7 +213,7 @@ FEATURES = [
     ("globe", "Regions", "A US map, state rankings and a drill-down to every city.", "views/regions.py", ""),
     ("truck", "Operations", "How discounts hit margin, and how fast orders ship.", "views/operations.py", ""),
     ("sparkles", "Forecast", "Back-tested forecasts with ranges, a what-if simulator and saved runs.",
-     "views/planning.py", ""),
+     "views/forecast.py", ""),
 ]
 for row in (FEATURES[:3], FEATURES[3:]):
     for col, (icon_name, title, body, page, tag) in zip(st.columns(3, gap="medium"), row):

@@ -165,3 +165,14 @@ def test_saved_run_reloads_exactly(tmp_path, sample):
     loaded = db.get_run(run_id, tmp_path / "r.db")["results"]
     assert loaded["forecast"] == frame["forecast"].tolist()
     assert loaded["index"] == results["index"]
+
+
+def test_slices_with_too_few_orders_raise_no_alerts():
+    """A 600-row file has only a few orders a month per region: no alerts from noise."""
+    from pathlib import Path
+    data = (Path(__file__).parent / "fixtures" / "renamed_schema.csv").read_bytes()
+    cleaned, _ = ingest.read_and_clean(data, "renamed_schema.csv")
+    from core.schema import suggest_mapping
+    df = ingest.load_dataset(data, "renamed_schema.csv", suggest_mapping(cleaned.columns), is_sample=False).df
+    found = anomalies.detect(df, df["order_date"].min(), df["order_date"].max())
+    assert found.empty

@@ -135,7 +135,12 @@ def _switch_theme_script(choice: str, paths: list[str], chart_mode: str) -> str:
 </script>"""
 
 
-def sidebar(dataset: Dataset) -> None:
+def sidebar(dataset: Dataset | None) -> None:
+    if dataset is None:
+        with st.sidebar:
+            ui.section_label("Dataset")
+            ui.no_dataset_chip()
+        return
     df = dataset.df
     filters.reset_if_dataset_changed(dataset.digest)
     filters.apply_pending()
@@ -194,10 +199,16 @@ def page(title: str, subtitle: str = "", *, needs: tuple[str, ...] = (),
          feature: str = "", date_controls: bool = True) -> PageContext | None:
     """
     Renders the header (title + global date controls + filter chips) and
-    returns the filtered frames. Returns None after drawing a locked state if
-    the dataset lacks fields the page needs.
+    returns the filtered frames. Returns None after drawing an upload prompt
+    when no dataset is loaded yet, or a locked state when the dataset lacks
+    fields the page needs.
     """
     dataset = state.get_dataset()
+    if dataset is None:
+        header(title, subtitle)
+        st.space("small")
+        ui.no_data_state(title)
+        return None
     df = dataset.df
 
     header(title, subtitle, df=df if date_controls else None)
