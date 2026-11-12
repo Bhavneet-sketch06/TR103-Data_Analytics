@@ -1,11 +1,10 @@
-"""Home: the landing page. What InsightSphere is, a live preview, and where to start."""
+"""Home: the landing page. What InsightSphere is, what it looks like, and where to start."""
 
 from __future__ import annotations
 
-import pandas as pd
 import streamlit as st
 
-from core import filters, metrics, state
+from core import state
 from ui import charts, shell, upload
 from ui import components as ui
 
@@ -70,93 +69,20 @@ with text_col:
               "Nothing is sent anywhere.</div>")
 
 
-def _trend_svg(current: pd.Series, previous: pd.Series | None, width: int = 520, height: int = 150) -> str:
-    """Current period as a solid accent line with a soft area, the comparison dotted."""
-    values = list(current.values) + (list(previous.dropna().values) if previous is not None else [])
-    lo, hi = 0.0, max(values) if values else 1.0
-    pad = 6
-
-    def points(series):
-        step = (width - 2 * pad) / max(len(series) - 1, 1)
-        return [(pad + i * step, height - pad - (v - lo) / ((hi - lo) or 1) * (height - 2 * pad))
-                for i, v in enumerate(series)]
-
-    cur = points(list(current.values))
-    line = " ".join(f"{x:.1f},{y:.1f}" for x, y in cur)
-    area = f"{cur[0][0]:.1f},{height} {line} {cur[-1][0]:.1f},{height}"
-    svg = [f'<svg viewBox="0 0 {width} {height}" width="100%" height="{height}" preserveAspectRatio="none" '
-           'aria-hidden="true">']
-    for frac in (0.25, 0.5, 0.75):
-        y = pad + frac * (height - 2 * pad)
-        svg.append(f'<line x1="0" x2="{width}" y1="{y:.1f}" y2="{y:.1f}" style="stroke:var(--is-grid)" '
-                   'stroke-width="1"/>')
-    svg.append(f'<polygon points="{area}" style="fill:var(--is-accent-soft)"/>')
-    if previous is not None and previous.notna().sum() > 1:
-        prev_line = " ".join(f"{x:.1f},{y:.1f}" for x, y in points(list(previous.fillna(0).values)))
-        svg.append(f'<polyline points="{prev_line}" style="fill:none;stroke:var(--is-text-3)" stroke-width="1.6" '
-                   'stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>')
-    svg.append(f'<polyline points="{line}" style="fill:none;stroke:var(--is-accent)" stroke-width="2.4" '
-               'stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>')
-    svg.append("</svg>")
-    return "".join(svg)
-
-
-def _placeholder_preview() -> str:
-    """The preview card before any data: labelled blanks, no numbers."""
-    tiles = "".join(
-        f'<div class="is-preview-tile"><div class="is-preview-label">{label}</div>'
-        '<div class="is-skeleton is-skeleton-value"></div><div class="is-skeleton is-skeleton-badge"></div></div>'
-        for label in ("Revenue", "Profit", "Orders")
-    )
-    grid = "".join(f'<line x1="0" x2="520" y1="{y}" y2="{y}" style="stroke:var(--is-grid)" stroke-width="1"/>'
-                   for y in (41, 75, 109))
-    return (
-        '<div class="is-preview">'
-        '<div class="is-preview-head"><span class="is-idle-dot"></span>Preview'
-        '<span class="is-preview-src">waiting for your file</span></div>'
-        f'<div class="is-preview-tiles">{tiles}</div>'
-        '<div class="is-preview-chart-head"><span>Revenue, last 12 months</span></div>'
-        '<div class="is-preview-empty">'
-        f'<svg viewBox="0 0 520 150" width="100%" height="150" preserveAspectRatio="none" aria-hidden="true">{grid}</svg>'
-        f'<div class="is-preview-empty-text">{ui.icon("upload", 16)}Your KPIs and trend appear here after you upload</div>'
-        "</div></div>"
-    )
-
-
+# The hero image is fixed: a real screenshot of the Overview with the bundled
+# sample dataset (static/hero-*.png), shown whatever data is loaded. It follows
+# the theme switch, which reruns the page with the new mode.
 with preview_col:
-    if dataset is None:
-        ui.render(_placeholder_preview())
-    else:
-        df = dataset.df
-        window = filters.compute_window("Last 12 months", "Same period last year",
-                                        df["order_date"].min(), df["order_date"].max())
-        cur = filters.slice_window(df, window.start, window.end)
-        prev = filters.slice_window(df, window.prev_start, window.prev_end) if window.prev_start is not None else None
-        now = metrics.kpis(cur)
-        before = metrics.kpis(prev) if prev is not None and not prev.empty else {}
-        tiles = []
-        for key in [k for k in ("revenue", "profit", "orders", "customers") if k in now][:3]:
-            k = now[key]
-            value = charts.money(k.value) if k.fmt == "money" else f"{k.value:,.0f}"
-            badge = ui.delta_badge(metrics.change(k, before.get(key)), higher_is_better=k.higher_is_better) \
-                if key in before else ""
-            tiles.append(f'<div class="is-preview-tile"><div class="is-preview-label">{ui.esc(k.label)}</div>'
-                         f'<div class="is-preview-value">{ui.esc(value)}</div>{badge}</div>')
-        current = metrics.series(cur, "revenue")
-        compared = metrics.comparison_series(prev, current, window) if prev is not None and not prev.empty else None
-        first, last = current.index[0], current.index[-1]
-        ui.render(
-            '<div class="is-preview">'
-            '<div class="is-preview-head"><span class="is-live-dot"></span>Live preview'
-            f'<span class="is-preview-src">{ui.esc(dataset.name)}</span></div>'
-            f'<div class="is-preview-tiles">{"".join(tiles)}</div>'
-            '<div class="is-preview-chart-head"><span>Revenue, last 12 months</span>'
-            '<span class="is-preview-legend"><i class="solid"></i>This year'
-            + ('<i class="dotted"></i>Last year' if compared is not None else "") + "</span></div>"
-            + _trend_svg(current, compared)
-            + f'<div class="is-preview-axis"><span>{first:%b %Y}</span><span>{last:%b %Y}</span></div>'
-            "</div>"
-        )
+    mode = charts.current_mode()
+    ui.render(
+        '<figure class="is-hero-shot">'
+        '<div class="is-hero-chrome"><span></span><span></span><span></span>'
+        '<div class="is-hero-url">insightsphere · Overview</div></div>'
+        f'<img src="app/static/hero-{mode}.png" alt="InsightSphere Overview page: KPI tiles for revenue, profit, '
+        'margin, orders and order value, and a monthly revenue trend against last year." width="1280" height="800">'
+        "</figure>"
+        '<div class="is-hero-caption">Example: the Overview with the bundled sample dataset</div>'
+    )
 
 # ----------------------------------------------------------
 # Upload
