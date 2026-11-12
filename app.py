@@ -18,7 +18,7 @@ st.set_page_config(
     page_title="InsightSphere",
     page_icon="ui/assets/logo.svg",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="auto",           # open on desktop, collapsed on phones
 )
 
 shell.inject_css()
