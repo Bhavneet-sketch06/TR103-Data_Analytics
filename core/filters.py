@@ -195,12 +195,12 @@ def date_selects() -> None:
     _init(K_COMPARE, DEFAULT_COMPARE)
     st.selectbox(
         "Date range", PRESETS, key=K_PRESET,
-        label_visibility="collapsed", width=170,
+        label_visibility="collapsed", width=150,
         bind="query-params", persist_state="session",
     )
     st.selectbox(
         "Compare to", COMPARE, key=K_COMPARE,
-        label_visibility="collapsed", width=200,
+        label_visibility="collapsed", width=180,
         bind="query-params", persist_state="session",
     )
 

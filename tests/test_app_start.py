@@ -23,10 +23,19 @@ def run_page(page: str | None = None, digest: str | None = None) -> AppTest:
     return at
 
 
-def test_landing_page_starts_without_numbers():
+def test_landing_page_shows_the_fixed_hero_image_and_no_numbers():
     text = markdown_text(run_page())
-    assert "waiting for your file" in text
-    assert "Live preview" not in text and "$" not in text
+    assert 'src="app/static/hero-' in text
+    assert "$" not in text
+    for mode in ("light", "dark"):
+        assert (Path(APP).parent / "static" / f"hero-{mode}.png").exists()
+
+
+def test_hero_image_is_the_same_with_data_loaded():
+    empty = markdown_text(run_page())
+    loaded = markdown_text(run_page(digest="sample"))
+    hero = lambda t: t[t.index('<figure class="is-hero-shot">'):t.index("</figure>")]  # noqa: E731
+    assert hero(empty) == hero(loaded)
 
 
 def test_analysis_pages_ask_for_an_upload_first():

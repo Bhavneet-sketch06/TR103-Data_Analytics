@@ -145,6 +145,8 @@ def config_toml() -> str:
 [server]
 headless = false
 runOnSave = false
+# Serves ./static/ at /app/static/ (the landing page's hero images).
+enableStaticServing = true
 
 [client]
 toolbarMode = "minimal"
