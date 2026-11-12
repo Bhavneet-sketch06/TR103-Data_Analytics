@@ -111,6 +111,12 @@ with left:
                      else f"{report['duplicates_removed']:,} duplicate rows removed",
             "body": "Exact duplicates are removed so totals aren't double counted.",
         })
+        if report.get("blank_rows_removed"):
+            items.append({
+                "tone": "info",
+                "title": f"{report['blank_rows_removed']:,} empty rows skipped",
+                "body": "Spacer lines with no values at all, common in exported reports.",
+            })
         numeric_missing = int(df.select_dtypes("number").isna().sum().sum())
         items.append({
             "tone": "good" if numeric_missing == 0 else "warn",

@@ -2,15 +2,40 @@
 
 from __future__ import annotations
 
-import pandas as pd
 import streamlit as st
 
 from core import anomalies, filters, insights, metrics
 from core.schema import FIELD_BY_KEY
-from ui import blocks, charts, shell
+from ui import blocks, charts, report, shell
 from ui import components as ui
 
-ctx = shell.page("Overview", "How the business is doing in the selected period.")
+def _report_button(page_ctx) -> None:
+    """
+    Download button for the HTML report. Streamlit builds a deferred download
+    in a background thread with no session, so everything the report needs
+    (data, filters, window) is captured now; only the work happens on click.
+    """
+    selections, key = filters.selections(), blocks.selection_key()
+    history = filters.apply_dimension_filters(page_ctx.df, selections)
+    digest, window_ = page_ctx.dataset.digest, page_ctx.window
+
+    def build() -> str:
+        alerts = blocks.cached_anomalies(digest, key, window_.start, window_.end, page_ctx.hist)
+        try:
+            forecast = blocks.cached_forecast(digest, key, "revenue", "Month", 6, "Auto", history)
+        except ValueError:                 # not enough history to forecast: the report leaves it out
+            forecast = None
+        return report.build(page_ctx, selections, forecast=forecast, alerts=alerts)
+
+    st.download_button(
+        "Download report", data=build, file_name=report.file_name(page_ctx.dataset.name), mime="text/html",
+        icon=":material/download:", key="ov-report", on_click="ignore",
+        help="A one-page HTML report of this view: KPIs, trend, alerts, breakdowns and a 6-month forecast. "
+             "Open it in any browser; use Print to save it as a PDF.",
+    )
+
+
+ctx = shell.page("Overview", "How the business is doing in the selected period.", actions=_report_button)
 if ctx is None:
     st.stop()
 if ctx.cur.empty:
@@ -33,14 +58,7 @@ blocks.kpi_row(ctx, available[:5])
 # Trend + highlights
 # ----------------------------------------------------------
 
-@st.cache_data(show_spinner=False, max_entries=32)
-def find_anomalies(digest: str, selections: str, start, end, _hist: pd.DataFrame) -> pd.DataFrame:
-    """Cached by dataset, filters and window (the frame itself isn't hashed)."""
-    return anomalies.detect(_hist, start, end)
-
-
-found = find_anomalies(ctx.dataset.digest, repr(sorted((k, tuple(v)) for k, v in filters.selections().items())),
-                       window.start, window.end, ctx.hist)
+found = blocks.cached_anomalies(ctx.dataset.digest, blocks.selection_key(), window.start, window.end, ctx.hist)
 
 st.space("small")
 left, right = st.columns([2, 1], gap="medium")

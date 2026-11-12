@@ -196,10 +196,11 @@ def header(title: str, subtitle: str = "", *, df: pd.DataFrame | None = None) ->
 
 
 def page(title: str, subtitle: str = "", *, needs: tuple[str, ...] = (),
-         feature: str = "", date_controls: bool = True) -> PageContext | None:
+         feature: str = "", date_controls: bool = True, actions=None) -> PageContext | None:
     """
     Renders the header (title + global date controls + filter chips) and
-    returns the filtered frames. Returns None after drawing an upload prompt
+    returns the filtered frames. `actions(ctx)` (a function drawing buttons) goes
+    at the right of the date-range line. Returns None after drawing an upload prompt
     when no dataset is loaded yet, or a locked state when the dataset lacks
     fields the page needs.
     """
@@ -220,8 +221,14 @@ def page(title: str, subtitle: str = "", *, needs: tuple[str, ...] = (),
         return None
 
     cur, prev, hist, window = filters.filtered(df)
-    if date_controls:
+    ctx = PageContext(dataset=dataset, df=df, cur=cur, prev=prev, hist=hist, window=window)
+    if date_controls or actions:
         meta = window.label + (f"  ·  {window.compare_short}" if window.compare_short else "")
-        st.caption(meta)
+        with st.container(horizontal=True, vertical_alignment="center", key="page-meta"):
+            if date_controls:
+                st.caption(meta)
+            if actions:
+                with st.container(horizontal=True, horizontal_alignment="right"):
+                    actions(ctx)
     filters.filter_chips()
-    return PageContext(dataset=dataset, df=df, cur=cur, prev=prev, hist=hist, window=window)
+    return ctx

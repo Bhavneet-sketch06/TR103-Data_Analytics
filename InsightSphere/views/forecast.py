@@ -22,15 +22,8 @@ if history.empty:
     st.stop()
 
 t = charts.tokens_for(charts.current_mode())
-selection_key = repr(sorted((k, tuple(v)) for k, v in filters.selections().items()))
+selection_key = blocks.selection_key()
 GRAIN_UNIT = {"Month": "month", "Week": "week"}
-
-
-@st.cache_data(show_spinner=False, max_entries=64)
-def run_forecast(digest: str, selections: str, metric: str, grain: str, horizon: int, model: str,
-                 _history: pd.DataFrame) -> forecasting.Result:
-    """Cached by dataset, filters and settings (the frame itself isn't hashed)."""
-    return forecasting.run(_history, metric, grain, horizon, model)
 
 
 def _rounded(value: float, kind: str) -> str:
@@ -67,7 +60,7 @@ with forecast_tab:
 
     try:
         with st.spinner("Fitting and back-testing models…"):
-            result = run_forecast(ctx.dataset.digest, selection_key, metric, grain, horizon, model, history)
+            result = blocks.cached_forecast(ctx.dataset.digest, selection_key, metric, grain, horizon, model, history)
     except ValueError as exc:
         ui.empty_state("Not enough history to forecast", str(exc), icon_name="chart")
         st.stop()
@@ -208,7 +201,7 @@ with whatif_tab:
         response = simulator.discount_response(recent, group or "category")
         base_h = horizon if grain == "Month" else 6
         try:
-            baseline_run = run_forecast(ctx.dataset.digest, selection_key, "revenue", "Month", base_h, "Auto", history)
+            baseline_run = blocks.cached_forecast(ctx.dataset.digest, selection_key, "revenue", "Month", base_h, "Auto", history)
             baseline_revenue = float(baseline_run.forecast.mean.sum())
             baseline_label = f"forecast revenue, next {base_h} months"
         except ValueError:

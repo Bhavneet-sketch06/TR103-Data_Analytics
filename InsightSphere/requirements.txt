@@ -4,5 +4,4 @@ pandas>=3.0,<4
 numpy>=2.2,<3
 plotly>=6.0,<7
 statsmodels>=0.15,<0.16
-anthropic>=2.6,<3
 openpyxl>=3.1,<4
