@@ -82,8 +82,13 @@ def kpi_row(ctx, keys, labels: dict | None = None) -> None:
 # Trend card
 # ----------------------------------------------------------
 
-def trend_chart(ctx, key: str, metric: str, grain: str, height: int = 300) -> None:
-    """Current period as a solid line, the comparison period dashed and muted."""
+def trend_chart(ctx, key: str, metric: str, grain: str, height: int = 300,
+                alerts: pd.DataFrame | None = None) -> None:
+    """
+    Current period as a solid line, the comparison period dashed and muted.
+    `alerts` (rows from anomalies.detect for the total) are ringed on monthly
+    revenue charts.
+    """
     t = charts.tokens_for(charts.current_mode())
     kind = METRIC_FMT[metric]
     current = metrics.series(ctx.cur, metric, grain)
@@ -100,6 +105,16 @@ def trend_chart(ctx, key: str, metric: str, grain: str, height: int = 300) -> No
         line=dict(color=t["accent"], width=2), marker=dict(size=6),
         hovertemplate=HOVER[kind],
     )
+    if alerts is not None and not alerts.empty and grain == "Month":
+        marks = alerts[alerts["metric"] == metric]
+        if not marks.empty:
+            fig.add_scatter(
+                x=marks["month"], y=marks["actual"], name="Unusual month", mode="markers",
+                marker=dict(size=13, color="rgba(0,0,0,0)",
+                            line=dict(width=2.5, color=[t["good"] if z > 0 else t["bad"] for z in marks["z"]])),
+                customdata=marks[["expected"]],
+                hovertemplate="Unusual: %{y:$,.0f} vs about %{customdata[0]:$,.0f} expected<extra></extra>",
+            )
     x_format = {"Day": "%b %d", "Week": "%b %d", "Month": "%b %Y", "Quarter": "Q%q %Y"}[grain]
     charts.style(fig, height=height, legend=True, y_format=AXIS_FMT[kind], x_format=x_format)
     if kind == "money" and (current.min() if len(current) else 0) >= 0:
@@ -107,7 +122,8 @@ def trend_chart(ctx, key: str, metric: str, grain: str, height: int = 300) -> No
     charts.show(fig, key=key)
 
 
-def trend_card(ctx, key: str, title: str = "Trend", metrics_offered=("revenue", "profit", "orders")) -> None:
+def trend_card(ctx, key: str, title: str = "Trend", metrics_offered=("revenue", "profit", "orders"),
+               alerts: pd.DataFrame | None = None) -> None:
     offered = [m for m in metrics_offered if m in ("revenue", "orders") or "profit" in ctx.cur.columns]
     with ui.card(key, title, f"{ctx.window.label}" + (f" · dotted line {period_label(ctx.window)}"
                                                       if ctx.prev is not None else "")):
@@ -123,7 +139,7 @@ def trend_card(ctx, key: str, title: str = "Trend", metrics_offered=("revenue", 
                     default=metrics.auto_grain(ctx.window.start, ctx.window.end),
                     label_visibility="collapsed",
                 ) or metrics.auto_grain(ctx.window.start, ctx.window.end)
-        trend_chart(ctx, f"{key}-chart", metric, grain)
+        trend_chart(ctx, f"{key}-chart", metric, grain, alerts=alerts)
 
 
 # ----------------------------------------------------------

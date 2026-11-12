@@ -63,6 +63,12 @@ def sequential_scale() -> list[list]:
     return [[i / n, c] for i, c in enumerate(ramp)]
 
 
+def rgba(hex_color: str, alpha: float) -> str:
+    """'#4F46E5', 0.18 -> 'rgba(79,70,229,0.18)' (for translucent bands)."""
+    r, g, b = (int(hex_color.lstrip("#")[i:i + 2], 16) for i in (0, 2, 4))
+    return f"rgba({r},{g},{b},{alpha})"
+
+
 def _luminance(hex_color: str) -> float:
     r, g, b = (int(hex_color.lstrip("#")[i:i + 2], 16) / 255 for i in (0, 2, 4))
     lin = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4 for c in (r, g, b)]
