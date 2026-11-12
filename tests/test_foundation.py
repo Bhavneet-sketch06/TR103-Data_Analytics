@@ -107,7 +107,7 @@ def test_rows_without_date_or_revenue_are_dropped_and_counted():
 def test_cleaning_never_invents_numbers():
     raw = pd.DataFrame({
         "Sales": [10.0, None, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0],
-        "Region": ["West", None, "west", "West", "East", "East", "West", "East"],
+        "Region": ["West", "East", "west", "West", None, "East", "West", "East"],
     })
     cleaned, report = clean_dataset(raw)
     assert cleaned["Sales"].isna().sum() == 1                 # left missing, not median-filled
@@ -219,3 +219,29 @@ def test_runs_are_listed_newest_first(tmp_path):
     assert db.get_run(second, path)["results"] == {"x": 1}
     db.delete_runs([first], path)
     assert db.list_runs(path)["id"].tolist() == [second]
+
+
+# ----------------------------------------------------------
+# Messy files
+# ----------------------------------------------------------
+
+def test_day_first_dates_are_detected_from_the_whole_column():
+    from core.cleaning import detect_dayfirst, parse_dates
+    # The first value is ambiguous; a later one (28/11) settles it.
+    s = pd.Series(["07/04/2023", "28/11/2023", "01/02/2024"])
+    assert detect_dayfirst(s) is True
+    assert parse_dates(s).dt.month.tolist() == [4, 11, 2]
+    assert detect_dayfirst(pd.Series(["04/07/2023", "11/28/2023"])) is False
+    assert detect_dayfirst(pd.Series(["2023-04-07"])) is None
+
+
+def test_messy_export_is_read_cleanly():
+    ds, _, mapping = load("messy.csv")
+    df = ds.df
+    assert mapping["order_date"] == "Date of Sale" and mapping["customer_id"] == "Cust"
+    assert mapping["region"] == "Country"
+    assert pd.api.types.is_float_dtype(df["revenue"])               # "€1,069.42" parsed
+    assert df["order_date"].min() == pd.Timestamp("2023-01-01")     # day-first, nothing dropped by a bad guess
+    assert ds.report["blank_rows_removed"] >= 1
+    assert ds.report["duplicates_removed"] == 2                       # blank rows aren't counted here
+    assert set(df["region"]) == {"Ireland", "Spain", "Portugal", "France"}   # "ireland " normalised

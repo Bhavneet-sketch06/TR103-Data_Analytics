@@ -1,0 +1,435 @@
+  Date of Sale ;Invoice;Cust;Item;Product line;Country;Units;Total (€)
+28/11/2023;INV-1000;C010;Floor lamp;Lighting;France;4;€1,069.42
+07/04/2023;INV-1001;C065;Office chair;Seating;ireland ;5;€210.20
+08/02/2023;INV-1002;C031;Desk lamp;Lighting;Ireland;4;€715.62
+10/03/2024;INV-1003;C029;Desk lamp;Lighting;France;5;€335.22
+05/03/2023;INV-1004;C029;Bookshelf;Storage;Ireland;5;€853.69
+17/05/2023;INV-1005;C016;Office chair;Seating;France;4;
+12/11/2023;INV-1006;C075;Bookshelf;Storage;France;6;€532.06
+12/07/2023;INV-1007;C009;Office chair;Seating;France;1;€228.14
+03/03/2023;INV-1008;C069;Bookshelf;Storage;Portugal;2;€417.28
+18/11/2023;INV-1009;C047;Stool;seating;Spain;5;€1,854.54
+;;;;;;;
+12/09/2023;INV-1010;C011;Floor lamp;Lighting;France;6;€1,898.01
+04/11/2023;INV-1011;C058;Bookshelf;Storage;Spain;4;€1,410.21
+16/03/2023;INV-1012;C044;Desk lamp;Lighting;ireland ;5;€894.43
+15/05/2024;INV-1013;C010;Stool;seating;France;1;€385.57
+18/11/2023;INV-1014;C064;Office chair;Seating;France;6;€918.41
+12/04/2024;INV-1015;C061;Desk lamp;Lighting;Ireland;1;€378.98
+04/03/2023;INV-1016;C074;Drawer unit;STORAGE;Portugal;6;€825.90
+19/10/2023;INV-1017;C045;Drawer unit;STORAGE;Ireland;4;€1,428.30
+17/04/2024;INV-1018;C064;Office chair;Seating;Ireland;2;€504.30
+12/08/2023;INV-1019;C051;Office chair;Seating;Portugal;2;€601.16
+23/05/2024;INV-1020;C071;Desk lamp;Lighting;Spain;2;€381.38
+21/05/2023;INV-1021;C054;Stool;seating;Spain;5;€629.00
+25/01/2024;INV-1022;C020;Floor lamp;Lighting;ireland ;2;€103.07
+27/08/2023;INV-1023;C024;Desk lamp;Lighting;Spain;4;€1,343.26
+16/10/2023;INV-1024;C048;Desk lamp;Lighting;France;2;€358.40
+23/11/2023;INV-1025;C080;Floor lamp;Lighting;Ireland;6;€2,078.98
+12/04/2024;INV-1026;C052;Drawer unit;STORAGE;Portugal;5;€845.52
+17/04/2023;INV-1027;C025;Stool;seating;Ireland;6;€1,033.01
+02/08/2023;INV-1028;C077;Stool;seating;Ireland;2;€123.55
+15/04/2023;INV-1029;C013;Desk lamp;Lighting;Spain;5;€387.40
+27/01/2023;INV-1030;C020;Desk lamp;Lighting;Spain;2;€506.69
+22/12/2023;INV-1031;C015;Bookshelf;Storage;Portugal;3;€600.53
+22/04/2024;INV-1032;C019;Stool;seating;Ireland;4;€554.02
+17/12/2023;INV-1033;C089;Drawer unit;STORAGE;ireland ;3;€605.63
+12/06/2024;INV-1034;C068;Desk lamp;Lighting;Spain;2;€762.75
+31/05/2023;INV-1035;C068;Drawer unit;STORAGE;Spain;5;€1,836.88
+04/04/2023;INV-1036;C022;Drawer unit;STORAGE;Spain;3;€650.97
+17/08/2023;INV-1037;C043;Bookshelf;Storage;ireland ;5;€1,580.20
+19/07/2023;INV-1038;C030;Floor lamp;Lighting;ireland ;4;€1,204.61
+14/06/2024;INV-1039;C004;Stool;seating;Spain;3;€893.34
+28/04/2024;INV-1040;C045;Office chair;Seating;Portugal;2;€566.32
+24/12/2023;INV-1041;C030;Office chair;Seating;Portugal;1;€103.78
+21/07/2023;INV-1042;C079;Office chair;Seating;Ireland;2;€406.82
+05/05/2024;INV-1043;C011;Drawer unit;STORAGE;Ireland;3;€971.59
+02/02/2024;INV-1044;C023;Drawer unit;STORAGE;Portugal;2;€403.30
+07/12/2023;INV-1045;C052;Desk lamp;Lighting;Ireland;6;€1,022.51
+12/06/2023;INV-1046;C076;Floor lamp;Lighting;Portugal;2;€60.94
+30/05/2023;INV-1047;C085;Bookshelf;Storage;Spain;5;€1,962.58
+09/06/2023;INV-1048;C002;Bookshelf;Storage;Ireland;5;€348.87
+23/06/2024;INV-1049;C025;Drawer unit;STORAGE;ireland ;2;€369.70
+29/01/2023;INV-1050;C031;Office chair;Seating;France;2;€262.65
+30/11/2023;INV-1051;C017;Office chair;Seating;Ireland;5;€896.12
+29/12/2023;INV-1052;C067;Stool;seating;Portugal;6;€1,450.04
+28/05/2024;INV-1053;C066;Floor lamp;Lighting;Ireland;5;€388.49
+26/03/2024;INV-1054;C020;Floor lamp;Lighting;ireland ;5;€107.47
+25/05/2023;INV-1055;C072;Stool;seating;Ireland;5;€1,477.87
+30/11/2023;INV-1056;C062;Drawer unit;STORAGE;Ireland;5;€1,108.38
+28/02/2023;INV-1057;C013;Floor lamp;Lighting;France;2;€250.46
+08/04/2024;INV-1058;C009;Bookshelf;Storage;Portugal;1;€308.80
+30/11/2023;INV-1059;C026;Bookshelf;Storage;Spain;5;€1,251.66
+08/04/2024;INV-1060;C065;Bookshelf;Storage;ireland ;5;€1,633.99
+19/06/2024;INV-1061;C026;Office chair;Seating;Portugal;5;€1,796.23
+21/05/2023;INV-1062;C041;Stool;seating;Ireland;1;€169.10
+04/09/2023;INV-1063;C039;Stool;seating;Ireland;1;€100.82
+08/06/2023;INV-1064;C019;Drawer unit;STORAGE;Spain;6;€1,625.38
+21/05/2023;INV-1065;C013;Stool;seating;Portugal;2;€607.48
+13/05/2024;INV-1066;C021;Floor lamp;Lighting;Portugal;6;€2,017.97
+11/06/2024;INV-1067;C046;Stool;seating;Spain;3;€540.26
+05/04/2023;INV-1068;C071;Drawer unit;STORAGE;Portugal;3;€82.21
+27/03/2024;INV-1069;C067;Drawer unit;STORAGE;France;1;€166.05
+30/10/2023;INV-1070;C030;Bookshelf;Storage;Ireland;1;€62.88
+28/03/2023;INV-1071;C024;Office chair;Seating;Spain;3;€105.13
+13/05/2023;INV-1072;C034;Stool;seating;Portugal;6;€1,987.27
+02/06/2023;INV-1073;C090;Bookshelf;Storage;Spain;5;€1,184.13
+02/04/2023;INV-1074;C024;Office chair;Seating;Portugal;1;€323.84
+16/03/2023;INV-1075;C034;Office chair;Seating;Ireland;1;€261.09
+16/08/2023;INV-1076;C059;Desk lamp;Lighting;Ireland;3;€1,043.56
+14/12/2023;INV-1077;C035;Bookshelf;Storage;France;4;€1,488.54
+13/05/2023;INV-1078;C015;Desk lamp;Lighting;ireland ;5;€1,448.12
+26/09/2023;INV-1079;C040;Desk lamp;Lighting;Spain;2;€193.34
+27/06/2024;INV-1080;C087;Floor lamp;Lighting;ireland ;3;€568.08
+05/10/2023;INV-1081;C005;Office chair;Seating;Ireland;1;€397.91
+19/01/2023;INV-1082;C025;Drawer unit;STORAGE;France;5;€1,146.99
+01/05/2024;INV-1083;C084;Floor lamp;Lighting;Portugal;4;€241.55
+21/05/2024;INV-1084;C040;Bookshelf;Storage;ireland ;4;€1,554.87
+24/08/2023;INV-1085;C082;Office chair;Seating;ireland ;2;€672.54
+19/02/2024;INV-1086;C002;Office chair;Seating;Ireland;1;€338.06
+19/09/2023;INV-1087;C086;Stool;seating;Portugal;2;€82.10
+02/06/2024;INV-1088;C089;Drawer unit;STORAGE;Spain;3;€742.61
+16/02/2023;INV-1089;C058;Stool;seating;Ireland;2;€159.73
+27/09/2023;INV-1090;C071;Office chair;Seating;Spain;3;€1,168.79
+08/09/2023;INV-1091;C024;Desk lamp;Lighting;Ireland;3;€308.37
+10/12/2023;INV-1092;C065;Stool;seating;ireland ;1;€200.36
+12/09/2023;INV-1093;C012;Bookshelf;Storage;ireland ;1;€54.52
+14/02/2024;INV-1094;C039;Bookshelf;Storage;Spain;1;€169.71
+27/08/2023;INV-1095;C020;Desk lamp;Lighting;France;5;€1,919.51
+03/02/2024;INV-1096;C020;Office chair;Seating;Spain;6;€2,365.18
+29/05/2023;INV-1097;C081;Desk lamp;Lighting;Portugal;6;€2,153.63
+01/06/2024;INV-1098;C073;Floor lamp;Lighting;Ireland;5;€1,530.45
+24/08/2023;INV-1099;C082;Desk lamp;Lighting;Spain;1;€35.91
+18/04/2023;INV-1100;C081;Stool;seating;Ireland;4;€928.96
+28/06/2024;INV-1101;C001;Drawer unit;STORAGE;Portugal;2;€411.86
+13/03/2023;INV-1102;C012;Drawer unit;STORAGE;France;5;€1,805.93
+09/03/2023;INV-1103;C010;Drawer unit;STORAGE;Spain;6;€1,200.40
+29/08/2023;INV-1104;C084;Drawer unit;STORAGE;Portugal;2;€215.36
+;;;;;;;
+20/05/2024;INV-1105;C088;Stool;seating;Spain;1;€202.02
+17/02/2023;INV-1106;C010;Bookshelf;Storage;France;6;€1,585.50
+31/05/2023;INV-1107;C089;Office chair;Seating;Spain;3;€802.75
+17/05/2023;INV-1108;C035;Desk lamp;Lighting;Ireland;4;€172.20
+11/08/2023;INV-1109;C067;Drawer unit;STORAGE;Spain;4;€522.10
+20/04/2024;INV-1110;C071;Stool;seating;ireland ;4;€1,246.10
+16/11/2023;INV-1111;C059;Desk lamp;Lighting;Ireland;4;€106.61
+02/06/2024;INV-1112;C027;Stool;seating;Ireland;3;€501.01
+03/04/2023;INV-1113;C047;Floor lamp;Lighting;ireland ;6;€1,314.87
+04/06/2024;INV-1114;C030;Office chair;Seating;Portugal;1;€287.27
+12/05/2024;INV-1115;C063;Stool;seating;Portugal;1;€80.44
+20/02/2024;INV-1116;C045;Office chair;Seating;Portugal;6;€440.81
+20/11/2023;INV-1117;C044;Desk lamp;Lighting;Portugal;3;€61.99
+03/05/2023;INV-1118;C038;Floor lamp;Lighting;Spain;6;€146.73
+17/01/2024;INV-1119;C076;Desk lamp;Lighting;Ireland;4;€673.04
+05/01/2024;INV-1120;C036;Stool;seating;Ireland;3;€1,033.85
+22/02/2023;INV-1121;C020;Drawer unit;STORAGE;ireland ;3;€783.86
+30/09/2023;INV-1122;C048;Stool;seating;Portugal;5;€699.64
+30/01/2023;INV-1123;C071;Drawer unit;STORAGE;France;4;€1,468.40
+28/07/2023;INV-1124;C053;Drawer unit;STORAGE;Portugal;1;€38.80
+22/05/2023;INV-1125;C071;Drawer unit;STORAGE;ireland ;3;€613.56
+24/06/2023;INV-1126;C039;Stool;seating;Spain;4;€602.37
+24/09/2023;INV-1127;C062;Stool;seating;France;6;€664.16
+08/02/2024;INV-1128;C010;Desk lamp;Lighting;ireland ;2;€528.84
+27/05/2024;INV-1129;C043;Stool;seating;Portugal;5;€518.05
+13/03/2024;INV-1130;C012;Floor lamp;Lighting;ireland ;5;€465.57
+17/12/2023;INV-1131;C048;Bookshelf;Storage;Spain;1;€141.33
+26/07/2023;INV-1132;C050;Desk lamp;Lighting;Portugal;6;€2,105.00
+20/06/2024;INV-1133;C008;Floor lamp;Lighting;Portugal;4;€490.76
+12/10/2023;INV-1134;C065;Bookshelf;Storage;France;3;€203.50
+10/08/2023;INV-1135;C050;Desk lamp;Lighting;Portugal;3;€1,082.34
+01/04/2024;INV-1136;C003;Stool;seating;ireland ;3;€1,027.50
+03/02/2023;INV-1137;C061;Stool;seating;France;6;€1,861.21
+16/05/2024;INV-1138;C068;Desk lamp;Lighting;Portugal;1;€168.78
+;;;;;;;
+04/04/2024;INV-1139;C020;Floor lamp;Lighting;France;1;€105.04
+22/04/2023;INV-1140;C059;Drawer unit;STORAGE;Ireland;6;€1,595.95
+10/02/2023;INV-1141;C005;Desk lamp;Lighting;Spain;2;€216.76
+12/05/2023;INV-1142;C056;Drawer unit;STORAGE;Ireland;3;€662.21
+12/04/2023;INV-1143;C075;Desk lamp;Lighting;ireland ;3;€657.86
+02/02/2024;INV-1144;C001;Office chair;Seating;Ireland;2;€640.77
+04/07/2024;INV-1145;C041;Office chair;Seating;ireland ;4;€503.48
+01/05/2024;INV-1146;C004;Bookshelf;Storage;Portugal;2;€455.72
+11/11/2023;INV-1147;C087;Desk lamp;Lighting;Portugal;1;€93.76
+25/03/2023;INV-1148;C048;Office chair;Seating;ireland ;2;€547.19
+19/05/2024;INV-1149;C054;Desk lamp;Lighting;Spain;6;€890.76
+10/02/2024;INV-1150;C065;Floor lamp;Lighting;Ireland;1;€322.88
+30/07/2023;INV-1151;C025;Stool;seating;ireland ;2;€276.90
+21/04/2024;INV-1152;C038;Floor lamp;Lighting;Ireland;3;€926.94
+22/05/2024;INV-1153;C063;Bookshelf;Storage;Portugal;2;€721.32
+27/02/2023;INV-1154;C007;Bookshelf;Storage;ireland ;2;€740.66
+25/01/2023;INV-1155;C008;Bookshelf;Storage;ireland ;2;€355.69
+07/02/2024;INV-1156;C015;Stool;seating;Ireland;6;€2,134.57
+19/06/2023;INV-1157;C068;Office chair;Seating;Portugal;2;€180.99
+02/02/2023;INV-1158;C048;Office chair;Seating;Spain;6;€1,773.86
+29/03/2024;INV-1159;C036;Floor lamp;Lighting;Ireland;1;€21.09
+26/12/2023;INV-1160;C027;Stool;seating;Portugal;1;€233.23
+01/01/2024;INV-1161;C061;Office chair;Seating;ireland ;4;€213.40
+17/01/2024;INV-1162;C047;Bookshelf;Storage;Portugal;4;€373.40
+01/02/2023;INV-1163;C081;Drawer unit;STORAGE;Portugal;4;€456.98
+11/02/2023;INV-1164;C008;Stool;seating;Spain;1;€196.34
+19/07/2023;INV-1165;C044;Drawer unit;STORAGE;Spain;1;€361.45
+06/10/2023;INV-1166;C089;Office chair;Seating;Spain;5;€182.81
+10/10/2023;INV-1167;C077;Office chair;Seating;Ireland;1;€294.20
+25/01/2023;INV-1168;C060;Floor lamp;Lighting;Portugal;1;€200.57
+15/09/2023;INV-1169;C064;Stool;seating;ireland ;4;€281.72
+09/01/2023;INV-1170;C020;Drawer unit;STORAGE;France;3;€997.94
+30/08/2023;INV-1171;C077;Office chair;Seating;Ireland;3;€585.29
+08/06/2024;INV-1172;C032;Floor lamp;Lighting;Portugal;4;€1,224.39
+08/03/2023;INV-1173;C070;Drawer unit;STORAGE;Spain;1;€203.04
+14/06/2023;INV-1174;C034;Stool;seating;France;1;€395.37
+28/03/2023;INV-1175;C058;Floor lamp;Lighting;ireland ;1;€180.00
+28/08/2023;INV-1176;C087;Floor lamp;Lighting;ireland ;4;€780.60
+05/07/2024;INV-1177;C038;Drawer unit;STORAGE;Spain;1;€316.31
+14/10/2023;INV-1178;C034;Bookshelf;Storage;ireland ;3;€485.19
+25/03/2024;INV-1179;C020;Floor lamp;Lighting;Spain;2;€226.46
+;;;;;;;
+12/07/2023;INV-1180;C032;Office chair;Seating;France;1;€170.51
+;;;;;;;
+22/06/2024;INV-1181;C084;Floor lamp;Lighting;Portugal;6;€1,963.25
+07/02/2023;INV-1182;C030;Desk lamp;Lighting;Portugal;1;€200.41
+18/01/2024;INV-1183;C007;Desk lamp;Lighting;ireland ;3;€325.50
+18/07/2023;INV-1184;C023;Desk lamp;Lighting;Portugal;3;€644.44
+24/09/2023;INV-1185;C077;Drawer unit;STORAGE;France;1;€60.20
+25/12/2023;INV-1186;C019;Floor lamp;Lighting;Ireland;1;€160.11
+;;;;;;;
+28/07/2023;INV-1187;C084;Office chair;Seating;ireland ;1;€247.78
+12/01/2023;INV-1188;C024;Office chair;Seating;France;4;€1,111.05
+16/11/2023;INV-1189;C064;Desk lamp;Lighting;France;2;€63.91
+10/05/2024;INV-1190;C051;Desk lamp;Lighting;France;4;€234.11
+08/06/2023;INV-1191;C021;Drawer unit;STORAGE;Portugal;5;€273.19
+05/10/2023;INV-1192;C054;Stool;seating;Ireland;3;€821.30
+16/11/2023;INV-1193;C054;Drawer unit;STORAGE;Portugal;5;€1,779.02
+19/01/2023;INV-1194;C052;Office chair;Seating;ireland ;6;€569.62
+07/01/2023;INV-1195;C012;Stool;seating;Portugal;2;€362.05
+09/01/2024;INV-1196;C007;Stool;seating;France;2;€138.78
+26/05/2023;INV-1197;C080;Drawer unit;STORAGE;Spain;4;€215.33
+31/05/2024;INV-1198;C021;Floor lamp;Lighting;France;2;€304.44
+25/06/2023;INV-1199;C026;Desk lamp;Lighting;Spain;1;€165.82
+10/05/2023;INV-1200;C078;Desk lamp;Lighting;Portugal;4;€558.08
+30/03/2023;INV-1201;C021;Drawer unit;STORAGE;ireland ;5;€1,407.61
+19/02/2024;INV-1202;C024;Bookshelf;Storage;France;2;€670.18
+12/08/2023;INV-1203;C021;Desk lamp;Lighting;Portugal;4;€1,506.59
+03/01/2024;INV-1204;C025;Desk lamp;Lighting;Ireland;2;€227.76
+09/02/2023;INV-1205;C077;Drawer unit;STORAGE;Portugal;3;€194.21
+10/11/2023;INV-1206;C032;Drawer unit;STORAGE;Portugal;4;€548.48
+03/02/2024;INV-1207;C057;Drawer unit;STORAGE;ireland ;3;€569.34
+24/01/2023;INV-1208;C060;Desk lamp;Lighting;ireland ;5;€1,973.66
+02/04/2024;INV-1209;C061;Bookshelf;Storage;Portugal;4;€1,351.55
+20/04/2023;INV-1210;C047;Desk lamp;Lighting;Ireland;2;€312.52
+28/03/2024;INV-1211;C006;Bookshelf;Storage;ireland ;5;€1,348.48
+26/03/2023;INV-1212;C066;Drawer unit;STORAGE;Ireland;3;€946.51
+25/02/2023;INV-1213;C018;Bookshelf;Storage;Ireland;4;€1,072.17
+09/03/2023;INV-1214;C015;Bookshelf;Storage;ireland ;6;€1,699.01
+15/05/2023;INV-1215;C022;Stool;seating;ireland ;3;€1,150.57
+09/03/2023;INV-1216;C021;Office chair;Seating;Spain;5;€1,536.74
+09/10/2023;INV-1217;C062;Stool;seating;ireland ;2;€233.16
+27/09/2023;INV-1218;C048;Bookshelf;Storage;Ireland;5;€551.06
+23/07/2023;INV-1219;C036;Floor lamp;Lighting;Spain;4;€325.07
+21/01/2024;INV-1220;C068;Floor lamp;Lighting;Ireland;3;€191.19
+;;;;;;;
+04/01/2024;INV-1221;C089;Stool;seating;Ireland;5;€1,090.76
+16/09/2023;INV-1222;C048;Bookshelf;Storage;Spain;6;€2,073.05
+20/01/2024;INV-1223;C043;Office chair;Seating;Ireland;5;€377.77
+28/03/2024;INV-1224;C007;Floor lamp;Lighting;Spain;2;€507.68
+12/06/2024;INV-1225;C075;Office chair;Seating;Spain;3;€788.73
+02/01/2023;INV-1226;C038;Drawer unit;STORAGE;France;1;€104.22
+18/03/2024;INV-1227;C007;Stool;seating;ireland ;5;€791.79
+15/05/2024;INV-1228;C003;Floor lamp;Lighting;Ireland;5;€1,340.91
+03/01/2023;INV-1229;C067;Bookshelf;Storage;Spain;3;€406.26
+30/06/2024;INV-1230;C076;Floor lamp;Lighting;ireland ;4;€967.06
+29/07/2023;INV-1231;C021;Office chair;Seating;ireland ;5;€1,674.10
+;;;;;;;
+15/01/2023;INV-1232;C013;Floor lamp;Lighting;Ireland;6;€460.43
+29/05/2023;INV-1233;C034;Drawer unit;STORAGE;Ireland;3;€518.23
+27/02/2023;INV-1234;C077;Drawer unit;STORAGE;France;5;€1,796.09
+30/03/2024;INV-1235;C032;Bookshelf;Storage;ireland ;5;€1,493.69
+01/01/2023;INV-1236;C052;Desk lamp;Lighting;ireland ;1;€221.98
+01/09/2023;INV-1237;C014;Floor lamp;Lighting;Ireland;1;€366.46
+21/07/2023;INV-1238;C078;Floor lamp;Lighting;France;4;€383.27
+01/03/2024;INV-1239;C009;Bookshelf;Storage;Spain;2;€426.52
+19/02/2023;INV-1240;C001;Drawer unit;STORAGE;Portugal;4;€1,167.41
+23/03/2024;INV-1241;C084;Drawer unit;STORAGE;Portugal;4;€202.33
+29/06/2023;INV-1242;C083;Floor lamp;Lighting;Ireland;1;€119.34
+07/05/2023;INV-1243;C034;Office chair;Seating;Ireland;6;€2,229.41
+30/09/2023;INV-1244;C088;Drawer unit;STORAGE;France;5;€1,390.55
+29/09/2023;INV-1245;C028;Office chair;Seating;Ireland;6;€2,237.14
+03/06/2024;INV-1246;C031;Desk lamp;Lighting;ireland ;2;€237.88
+13/06/2023;INV-1247;C050;Drawer unit;STORAGE;Spain;3;€278.81
+02/09/2023;INV-1248;C086;Stool;seating;France;6;€2,221.43
+25/04/2024;INV-1249;C004;Stool;seating;Portugal;5;€1,425.47
+28/08/2023;INV-1250;C051;Bookshelf;Storage;France;3;€959.69
+;;;;;;;
+21/03/2023;INV-1251;C004;Bookshelf;Storage;Ireland;2;€149.89
+20/04/2023;INV-1252;C019;Bookshelf;Storage;Ireland;2;€302.10
+01/02/2023;INV-1253;C082;Desk lamp;Lighting;Ireland;2;€566.40
+11/03/2023;INV-1254;C076;Drawer unit;STORAGE;Spain;1;€44.99
+24/07/2023;INV-1255;C050;Bookshelf;Storage;Ireland;6;€270.36
+10/09/2023;INV-1256;C005;Floor lamp;Lighting;Ireland;2;€125.10
+22/10/2023;INV-1257;C083;Stool;seating;ireland ;1;€70.41
+29/10/2023;INV-1258;C003;Office chair;Seating;Spain;3;€543.09
+20/09/2023;INV-1259;C048;Office chair;Seating;Spain;1;€291.99
+30/05/2024;INV-1260;C004;Stool;seating;Portugal;3;€764.83
+01/02/2023;INV-1261;C045;Stool;seating;Portugal;5;€1,568.75
+19/02/2023;INV-1262;C012;Bookshelf;Storage;France;5;€511.49
+22/10/2023;INV-1263;C026;Floor lamp;Lighting;Spain;4;€81.97
+25/02/2023;INV-1264;C063;Desk lamp;Lighting;ireland ;3;€619.54
+21/05/2024;INV-1265;C066;Bookshelf;Storage;Spain;3;€1,151.22
+12/06/2023;INV-1266;C030;Office chair;Seating;Portugal;2;€753.10
+19/06/2023;INV-1267;C063;Desk lamp;Lighting;France;6;€1,868.33
+18/04/2023;INV-1268;C052;Drawer unit;STORAGE;Portugal;3;€465.40
+30/03/2023;INV-1269;C027;Stool;seating;Spain;6;€177.40
+27/09/2023;INV-1270;C049;Stool;seating;ireland ;5;€1,052.26
+16/04/2024;INV-1271;C089;Floor lamp;Lighting;France;5;€1,228.77
+04/02/2023;INV-1272;C020;Office chair;Seating;Portugal;5;€720.65
+28/11/2023;INV-1273;C033;Floor lamp;Lighting;France;4;€746.97
+25/08/2023;INV-1274;C090;Floor lamp;Lighting;ireland ;3;€586.70
+03/06/2024;INV-1275;C080;Floor lamp;Lighting;ireland ;3;€403.72
+09/06/2023;INV-1276;C067;Floor lamp;Lighting;Spain;6;€864.56
+14/06/2023;INV-1277;C034;Floor lamp;Lighting;Ireland;3;€1,149.60
+18/06/2023;INV-1278;C020;Drawer unit;STORAGE;ireland ;1;€94.26
+06/11/2023;INV-1279;C026;Drawer unit;STORAGE;Ireland;3;€555.81
+20/04/2023;INV-1280;C060;Office chair;Seating;Ireland;2;€712.79
+13/01/2023;INV-1281;C065;Stool;seating;Spain;4;€1,134.03
+19/04/2024;INV-1282;C052;Desk lamp;Lighting;Ireland;2;€235.48
+06/09/2023;INV-1283;C083;Stool;seating;Portugal;6;€1,428.67
+23/08/2023;INV-1284;C083;Drawer unit;STORAGE;France;6;€1,607.67
+23/08/2023;INV-1285;C059;Drawer unit;STORAGE;Portugal;2;€527.57
+17/11/2023;INV-1286;C054;Office chair;Seating;ireland ;6;€1,717.48
+14/02/2024;INV-1287;C033;Drawer unit;STORAGE;Portugal;6;€1,555.52
+09/05/2024;INV-1288;C053;Stool;seating;France;1;€256.20
+07/07/2023;INV-1289;C050;Drawer unit;STORAGE;Portugal;3;€947.12
+19/04/2023;INV-1290;C021;Desk lamp;Lighting;ireland ;3;€679.43
+15/06/2024;INV-1291;C059;Office chair;Seating;France;1;€341.92
+29/07/2023;INV-1292;C082;Drawer unit;STORAGE;Spain;4;€858.53
+18/06/2024;INV-1293;C059;Office chair;Seating;ireland ;4;€1,208.01
+08/07/2023;INV-1294;C016;Stool;seating;France;5;€1,549.13
+31/12/2023;INV-1295;C049;Drawer unit;STORAGE;Portugal;1;€115.93
+04/03/2023;INV-1296;C054;Desk lamp;Lighting;Spain;1;€179.06
+29/09/2023;INV-1297;C052;Desk lamp;Lighting;France;2;€270.66
+13/08/2023;INV-1298;C017;Stool;seating;Ireland;4;€402.26
+17/07/2023;INV-1299;C029;Stool;seating;ireland ;6;€1,401.48
+28/12/2023;INV-1300;C053;Drawer unit;STORAGE;Portugal;6;€2,013.99
+29/10/2023;INV-1301;C061;Bookshelf;Storage;Spain;6;€405.38
+24/08/2023;INV-1302;C033;Office chair;Seating;Portugal;6;€977.62
+10/07/2023;INV-1303;C036;Stool;seating;Spain;1;€326.07
+08/09/2023;INV-1304;C063;Drawer unit;STORAGE;Portugal;3;€425.17
+29/03/2023;INV-1305;C039;Drawer unit;STORAGE;Portugal;3;€234.14
+28/02/2023;INV-1306;C018;Desk lamp;Lighting;France;5;€1,821.03
+;;;;;;;
+20/12/2023;INV-1307;C002;Drawer unit;STORAGE;ireland ;5;€128.47
+15/03/2023;INV-1308;C013;Drawer unit;STORAGE;France;3;€345.03
+27/05/2023;INV-1309;C045;Floor lamp;Lighting;ireland ;2;€629.99
+02/08/2023;INV-1310;C089;Stool;seating;France;5;€419.03
+03/04/2023;INV-1311;C039;Drawer unit;STORAGE;ireland ;5;€1,597.34
+21/05/2024;INV-1312;C057;Drawer unit;STORAGE;Ireland;2;€443.40
+02/05/2023;INV-1313;C018;Office chair;Seating;Portugal;4;€435.95
+19/05/2024;INV-1314;C019;Bookshelf;Storage;Portugal;1;€204.06
+10/09/2023;INV-1315;C001;Stool;seating;ireland ;2;€450.05
+25/11/2023;INV-1316;C086;Stool;seating;Spain;6;€1,402.66
+21/04/2024;INV-1317;C087;Office chair;Seating;Ireland;4;€716.60
+04/07/2023;INV-1318;C004;Drawer unit;STORAGE;Ireland;3;€785.18
+16/02/2023;INV-1319;C043;Drawer unit;STORAGE;Ireland;6;€2,243.80
+06/06/2024;INV-1320;C019;Stool;seating;Ireland;4;€1,230.90
+07/08/2023;INV-1321;C044;Drawer unit;STORAGE;Ireland;4;€1,030.42
+10/01/2024;INV-1322;C071;Office chair;Seating;ireland ;4;€1,263.36
+18/10/2023;INV-1323;C071;Stool;seating;Ireland;3;€541.52
+24/10/2023;INV-1324;C052;Office chair;Seating;Spain;3;€1,003.62
+30/05/2024;INV-1325;C027;Office chair;Seating;Portugal;5;€755.14
+01/05/2023;INV-1326;C039;Office chair;Seating;ireland ;2;€280.99
+31/03/2023;INV-1327;C052;Desk lamp;Lighting;France;4;€1,178.47
+20/02/2023;INV-1328;C006;Stool;seating;ireland ;3;€183.69
+01/05/2024;INV-1329;C065;Bookshelf;Storage;France;6;€257.14
+21/01/2024;INV-1330;C090;Bookshelf;Storage;France;2;€516.38
+26/03/2023;INV-1331;C059;Floor lamp;Lighting;ireland ;1;€273.46
+14/04/2023;INV-1332;C054;Drawer unit;STORAGE;Ireland;2;€700.60
+14/01/2023;INV-1333;C072;Office chair;Seating;Spain;2;€637.77
+06/11/2023;INV-1334;C003;Floor lamp;Lighting;Portugal;4;€132.05
+25/02/2023;INV-1335;C016;Stool;seating;Portugal;5;€1,092.09
+19/02/2024;INV-1336;C050;Stool;seating;France;1;€25.37
+09/06/2023;INV-1337;C011;Stool;seating;Portugal;4;€914.18
+06/08/2023;INV-1338;C001;Floor lamp;Lighting;Ireland;6;€155.41
+05/05/2023;INV-1339;C017;Desk lamp;Lighting;Portugal;2;€700.86
+19/01/2023;INV-1340;C058;Office chair;Seating;ireland ;6;€1,417.30
+21/02/2023;INV-1341;C019;Office chair;Seating;Ireland;6;€1,746.90
+28/10/2023;INV-1342;C059;Drawer unit;STORAGE;Spain;5;€1,447.55
+23/02/2023;INV-1343;C002;Drawer unit;STORAGE;France;1;€24.33
+23/03/2023;INV-1344;C077;Stool;seating;ireland ;3;€416.24
+13/05/2024;INV-1345;C074;Bookshelf;Storage;Portugal;1;€140.19
+26/04/2024;INV-1346;C015;Drawer unit;STORAGE;Spain;2;€150.13
+17/06/2023;INV-1347;C058;Drawer unit;STORAGE;Spain;4;€804.98
+08/12/2023;INV-1348;C084;Office chair;Seating;France;3;€129.13
+07/12/2023;INV-1349;C020;Bookshelf;Storage;France;6;€2,348.58
+13/11/2023;INV-1350;C032;Bookshelf;Storage;Portugal;4;€1,564.11
+01/02/2024;INV-1351;C030;Drawer unit;STORAGE;Portugal;4;€994.71
+18/10/2023;INV-1352;C035;Drawer unit;STORAGE;Portugal;1;€142.18
+11/06/2023;INV-1353;C019;Bookshelf;Storage;France;1;€129.64
+31/05/2023;INV-1354;C064;Office chair;Seating;Spain;5;€1,400.81
+01/07/2024;INV-1355;C049;Desk lamp;Lighting;ireland ;5;€1,151.98
+28/08/2023;INV-1356;C051;Office chair;Seating;Portugal;5;€209.37
+31/07/2023;INV-1357;C050;Office chair;Seating;Portugal;5;€1,527.15
+07/07/2024;INV-1358;C009;Desk lamp;Lighting;ireland ;5;€1,632.49
+12/02/2024;INV-1359;C067;Bookshelf;Storage;Spain;5;€1,804.17
+03/05/2024;INV-1360;C028;Bookshelf;Storage;ireland ;5;€483.55
+05/04/2023;INV-1361;C074;Floor lamp;Lighting;France;6;€780.74
+03/01/2024;INV-1362;C032;Stool;seating;Ireland;5;€1,728.21
+20/05/2024;INV-1363;C060;Office chair;Seating;Ireland;1;€161.23
+09/06/2023;INV-1364;C036;Office chair;Seating;France;5;€157.68
+22/01/2023;INV-1365;C073;Desk lamp;Lighting;Portugal;1;€97.76
+07/08/2023;INV-1366;C058;Office chair;Seating;France;3;€545.58
+15/05/2023;INV-1367;C024;Office chair;Seating;Portugal;1;€148.76
+27/03/2023;INV-1368;C048;Desk lamp;Lighting;Portugal;1;€33.23
+13/05/2024;INV-1369;C016;Desk lamp;Lighting;Ireland;5;€1,315.70
+21/09/2023;INV-1370;C012;Office chair;Seating;France;5;€543.09
+07/02/2024;INV-1371;C048;Floor lamp;Lighting;ireland ;4;€1,371.54
+16/08/2023;INV-1372;C046;Floor lamp;Lighting;Ireland;1;€377.85
+29/01/2023;INV-1373;C083;Desk lamp;Lighting;Portugal;3;€956.47
+27/02/2023;INV-1374;C001;Desk lamp;Lighting;ireland ;2;€281.44
+02/11/2023;INV-1375;C084;Bookshelf;Storage;Ireland;5;€938.43
+27/04/2024;INV-1376;C016;Office chair;Seating;Spain;3;€352.99
+07/05/2024;INV-1377;C019;Stool;seating;Ireland;2;€375.45
+24/04/2024;INV-1378;C021;Drawer unit;STORAGE;ireland ;2;€647.13
+21/03/2023;INV-1379;C018;Bookshelf;Storage;Portugal;3;€1,073.13
+10/04/2023;INV-1380;C058;Stool;seating;Spain;1;€258.78
+27/11/2023;INV-1381;C047;Floor lamp;Lighting;ireland ;4;€255.73
+06/12/2023;INV-1382;C058;Floor lamp;Lighting;France;6;€249.34
+29/05/2023;INV-1383;C053;Stool;seating;ireland ;2;€242.46
+09/06/2023;INV-1384;C038;Desk lamp;Lighting;Spain;3;€710.93
+21/06/2023;INV-1385;C059;Office chair;Seating;Portugal;4;€246.04
+27/04/2023;INV-1386;C086;Floor lamp;Lighting;ireland ;5;€208.02
+03/05/2024;INV-1387;C026;Office chair;Seating;Spain;1;€117.96
+18/03/2024;INV-1388;C013;Office chair;Seating;Portugal;2;€743.06
+24/10/2023;INV-1389;C038;Stool;seating;ireland ;2;€83.69
+17/01/2023;INV-1390;C018;Stool;seating;Portugal;5;€747.72
+02/01/2023;INV-1391;C056;Bookshelf;Storage;Ireland;3;€271.84
+23/02/2024;INV-1392;C018;Floor lamp;Lighting;ireland ;3;€711.33
+18/06/2024;INV-1393;C077;Floor lamp;Lighting;Ireland;6;€520.43
+31/03/2023;INV-1394;C036;Bookshelf;Storage;ireland ;6;€1,249.70
+30/07/2023;INV-1395;C081;Floor lamp;Lighting;ireland ;5;€1,372.81
+12/11/2023;INV-1396;C067;Floor lamp;Lighting;Portugal;1;€44.96
+26/02/2023;INV-1397;C082;Bookshelf;Storage;Portugal;3;€442.15
+03/04/2023;INV-1398;C062;Desk lamp;Lighting;ireland ;4;€1,463.53
+30/09/2023;INV-1399;C047;Floor lamp;Lighting;Ireland;2;€467.98
+17/06/2023;INV-1400;C001;Drawer unit;STORAGE;Spain;3;€715.41
+16/06/2024;INV-1401;C046;Stool;seating;ireland ;5;€235.55
+25/11/2023;INV-1402;C008;Drawer unit;STORAGE;Spain;4;€955.99
+21/04/2023;INV-1403;C004;Drawer unit;STORAGE;France;4;€758.59
+04/07/2024;INV-1404;C012;Floor lamp;Lighting;ireland ;1;€112.54
+06/07/2023;INV-1405;C072;Floor lamp;Lighting;Ireland;1;€138.53
+20/01/2023;INV-1406;C034;Desk lamp;Lighting;Ireland;6;€1,804.35
+20/04/2024;INV-1407;C014;Bookshelf;Storage;Spain;2;€574.01
+07/04/2023;INV-1408;C016;Drawer unit;STORAGE;Portugal;2;€74.33
+20/05/2024;INV-1409;C015;Bookshelf;Storage;Ireland;5;€1,546.87
+05/05/2023;INV-1410;C030;Stool;seating;ireland ;2;€451.61
+31/05/2023;INV-1411;C051;Drawer unit;STORAGE;ireland ;5;€977.90
+19/01/2023;INV-1412;C077;Drawer unit;STORAGE;France;4;€1,134.68
+22/06/2024;INV-1413;C007;Desk lamp;Lighting;Spain;4;€1,555.15
+13/12/2023;INV-1414;C056;Stool;seating;France;2;€677.31
+25/11/2023;INV-1415;C067;Stool;seating;ireland ;5;€201.75
+28/12/2023;INV-1416;C002;Floor lamp;Lighting;Spain;4;€1,087.94
+22/04/2023;INV-1417;C056;Bookshelf;Storage;ireland ;2;€92.64
+31/05/2024;INV-1418;C054;Drawer unit;STORAGE;Portugal;1;€105.68
+;;;;;;;
+09/04/2024;INV-1419;C006;Drawer unit;STORAGE;Ireland;1;€327.52
+12/09/2023;INV-1010;C011;Floor lamp;Lighting;France;6;€1,898.01
+04/11/2023;INV-1011;C058;Bookshelf;Storage;Spain;4;€1,410.21
+;;;;;;;TOTAL

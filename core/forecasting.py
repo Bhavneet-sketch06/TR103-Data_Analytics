@@ -208,6 +208,25 @@ def compare(y: pd.Series, h: int, grain: str, folds: int = 6, seasonal: bool | N
 
 
 # ----------------------------------------------------------
+# Warm-up
+# ----------------------------------------------------------
+
+def warm_up() -> None:
+    """
+    Imports statsmodels and fits each model once on a tiny series. The import
+    alone takes several seconds, so app.py runs this in a background thread
+    at startup; by the time someone opens the Forecast page it's ready.
+    """
+    idx = pd.date_range("2020-01-01", periods=36, freq="MS")
+    y = pd.Series(100 + 10 * np.sin(np.arange(36) * np.pi / 6), index=idx)
+    for model in MODELS:
+        try:
+            fit_forecast(y, model, 3, "Month")
+        except Exception:
+            pass
+
+
+# ----------------------------------------------------------
 # One call for the page
 # ----------------------------------------------------------
 

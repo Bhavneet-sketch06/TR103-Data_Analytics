@@ -12,7 +12,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from core import db, filters, metrics
+from core import anomalies, db, filters, forecasting, metrics
 from ui import charts
 from ui import components as ui
 
@@ -20,6 +20,28 @@ METRIC_LABELS = {"revenue": "Revenue", "profit": "Profit", "orders": "Orders", "
 HOVER = {"money": "%{y:$,.0f}", "count": "%{y:,.0f}", "pct": "%{y:.1%}"}
 METRIC_FMT = {"revenue": "money", "profit": "money", "orders": "count", "margin": "pct"}
 AXIS_FMT = {"money": "$~s", "count": "~s", "pct": ".0%"}
+
+
+# ----------------------------------------------------------
+# Cached analysis shared by pages and the report
+# ----------------------------------------------------------
+
+def selection_key() -> str:
+    """The active dimension filters as a hashable string (part of cache keys)."""
+    return repr(sorted((k, tuple(v)) for k, v in filters.selections().items()))
+
+
+@st.cache_data(show_spinner=False, max_entries=64)
+def cached_forecast(digest: str, selections: str, metric: str, grain: str, horizon: int, model: str,
+                    _history: pd.DataFrame) -> forecasting.Result:
+    """Cached by dataset, filters and settings (the frame itself isn't hashed)."""
+    return forecasting.run(_history, metric, grain, horizon, model)
+
+
+@st.cache_data(show_spinner=False, max_entries=32)
+def cached_anomalies(digest: str, selections: str, start, end, _hist: pd.DataFrame) -> pd.DataFrame:
+    """Cached by dataset, filters and window (the frame itself isn't hashed)."""
+    return anomalies.detect(_hist, start, end)
 
 
 def fmt(value, kind: str) -> str:

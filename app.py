@@ -7,9 +7,11 @@ Sets up the page, theme CSS, navigation and the shared sidebar, then runs the
 selected page from views/.
 """
 
+import threading
+
 import streamlit as st
 
-from core import state
+from core import forecasting, state
 from ui import shell
 
 st.set_page_config(
@@ -21,6 +23,17 @@ st.set_page_config(
 
 shell.inject_css()
 shell.logo()
+
+
+@st.cache_resource(show_spinner=False)
+def _warm_up_forecasting() -> threading.Thread:
+    """Loads the forecasting library in the background once per server (see forecasting.warm_up)."""
+    thread = threading.Thread(target=forecasting.warm_up, name="forecast-warm-up", daemon=True)
+    thread.start()
+    return thread
+
+
+_warm_up_forecasting()
 
 
 PAGES = {
