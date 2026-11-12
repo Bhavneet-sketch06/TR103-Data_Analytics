@@ -15,6 +15,14 @@ footer { display: none !important; }
   height: 2.5rem;
 }
 
+/* Streamlit's header and toolbar sit above the page. When the sidebar is
+   collapsed the toolbar stretches across the top and would swallow clicks
+   on our own header controls (theme switch, date pickers, top-bar buttons),
+   so only its real buttons take clicks; the empty strip lets them through. */
+[data-testid="stHeader"], [data-testid="stToolbar"] { pointer-events: none; }
+[data-testid="stHeader"] button, [data-testid="stHeader"] a,
+[data-testid="stExpandSidebarButton"], [data-testid="stSidebarCollapsedControl"] { pointer-events: auto; }
+
 [data-testid="stMainBlockContainer"] {
   max-width: 1440px;
   padding: 1.75rem 2.5rem 4rem;
