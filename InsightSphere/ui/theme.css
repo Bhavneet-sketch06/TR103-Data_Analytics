@@ -435,3 +435,15 @@ hr { border-color: var(--is-border) !important; margin: 0.5rem 0 1rem !important
   font-size: 11.5px; color: var(--is-text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .is-hero-shot img { display: block; width: 100%; height: auto; }
+
+/* With the sidebar collapsed, Streamlit shows the logo in the page header,
+   where our page titles start: move the content below it. */
+.stApp:has([data-testid="stHeaderLogo"]) [data-testid="stMainBlockContainer"] { padding-top: 3.75rem; }
+
+/* Tablets and phones: long KPI values (e.g. "$231K – $463K") wrap instead of spilling out of the tile. */
+@media (max-width: 1024px) {
+  .is-kpi-value { white-space: normal; }
+}
+@media (max-width: 640px) {
+  .is-kpi-value { font-size: 24px; }
+}

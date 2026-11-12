@@ -16,7 +16,7 @@ dataset = state.get_dataset()        # None until a file is uploaded (or the sam
 st.html("""<style>
 [data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"],
 [data-testid="stExpandSidebarButton"], [data-testid="stHeaderLogo"] { display: none !important; }
-[data-testid="stMainBlockContainer"] { max-width: 1220px; padding-top: 1.25rem; }
+[data-testid="stMainBlockContainer"] { max-width: 1220px; padding-top: 1.25rem !important; }
 </style>""")
 
 
@@ -67,8 +67,8 @@ with text_col:
                          key="cta-continue"):
                 st.switch_page("views/overview.py")
             st.button("Upload a new file", icon=":material/upload:", on_click=_scroll_to_upload, key="cta-new")
-    ui.render(f'<div class="is-hero-note">{ui.icon("lock", 13)}Your file is processed on this machine. '
-              "Nothing is sent anywhere.</div>")
+    ui.render(f'<div class="is-hero-note">{ui.icon("lock", 13)}Your file is processed on this machine '
+              "and never uploaded anywhere.</div>")
 
 
 # The hero image is fixed: a real screenshot of the Overview with the bundled
