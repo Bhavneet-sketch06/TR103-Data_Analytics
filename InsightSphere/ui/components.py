@@ -253,6 +253,29 @@ def locked_state(feature: str, missing_fields) -> None:
     st.page_link("views/data.py", label="Go to Data", icon=":material/arrow_forward:")
 
 
+def no_data_state(page: str) -> None:
+    """Shown on every analysis page until a dataset is loaded."""
+    empty_state(
+        "Upload your data to get started",
+        f"{page} fills in once you upload a sales file (CSV or Excel). Nothing is analysed until then.",
+        icon_name="upload",
+    )
+    with st.container(horizontal=True, horizontal_alignment="center"):
+        st.page_link("views/home.py", label="Upload a file", icon=":material/upload:")
+
+
+def no_dataset_chip() -> None:
+    render(
+        '<div class="is-dataset">'
+        f'<div class="is-dataset-icon">{icon("upload", 15)}</div>'
+        '<div style="min-width:0">'
+        '<div class="is-dataset-name">No data loaded</div>'
+        '<div class="is-dataset-meta">Upload a file to start</div>'
+        "</div></div>"
+    )
+    st.page_link("views/home.py", label="Upload a file", icon=":material/upload:")
+
+
 def section_label(text: str) -> None:
     render(f'<div class="is-side-label">{esc(text)}</div>')
 
