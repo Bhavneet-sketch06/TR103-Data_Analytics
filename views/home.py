@@ -186,8 +186,8 @@ FEATURES = [
     ("users", "Customers", "Segments, retention by cohort, new vs returning revenue.", "views/customers.py", ""),
     ("globe", "Regions", "A US map, state rankings and a drill-down to every city.", "views/regions.py", ""),
     ("truck", "Operations", "How discounts hit margin, and how fast orders ship.", "views/operations.py", ""),
-    ("sparkles", "Forecast and AI", "Forecasts, anomaly alerts and an assistant that answers questions.",
-     None, "Coming soon"),
+    ("sparkles", "Forecast", "Back-tested forecasts with ranges, a what-if simulator and saved runs.",
+     "views/planning.py", ""),
 ]
 for row in (FEATURES[:3], FEATURES[3:]):
     for col, (icon_name, title, body, page, tag) in zip(st.columns(3, gap="medium"), row):

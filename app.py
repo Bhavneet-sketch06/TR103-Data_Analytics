@@ -10,7 +10,6 @@ selected page from views/.
 import streamlit as st
 
 from core import state
-from ui import components as ui
 from ui import shell
 
 st.set_page_config(
@@ -22,20 +21,6 @@ st.set_page_config(
 
 shell.inject_css()
 shell.logo()
-
-
-def _coming_soon(title: str):
-    """Placeholder page for views that land in a later build phase."""
-    def render():
-        shell.header(title, "Part of the next build phase.")
-        st.space("small")
-        ui.empty_state(
-            f"{title} is being rebuilt",
-            "The design system and data foundation are in place; this view is built next.",
-            icon_name="chart",
-        )
-    render.__name__ = "page_" + title.lower().replace(" ", "_")
-    return render
 
 
 PAGES = {
@@ -51,14 +36,11 @@ PAGES = {
         st.Page("views/operations.py", title="Operations", icon=":material/local_shipping:",
                 url_path="operations"),
     ],
-    "Intelligence": [
-        st.Page(_coming_soon("Forecast"), title="Forecast", icon=":material/insights:", url_path="forecast"),
-        st.Page(_coming_soon("Assistant"), title="Assistant", icon=":material/auto_awesome:", url_path="assistant"),
+    "Planning": [
+        st.Page("views/planning.py", title="Forecast", icon=":material/insights:", url_path="forecast"),
     ],
     "Data": [
         st.Page("views/data.py", title="Data", icon=":material/database:", url_path="data"),
-        st.Page(_coming_soon("Forecast runs"), title="Forecast runs", icon=":material/history:",
-                url_path="forecast-runs"),
     ],
 }
 

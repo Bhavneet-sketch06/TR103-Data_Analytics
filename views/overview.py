@@ -1,10 +1,11 @@
-"""Overview: headline KPIs, the trend, what changed, and where."""
+"""Overview: headline KPIs, the trend, alerts and what changed, and where."""
 
 from __future__ import annotations
 
+import pandas as pd
 import streamlit as st
 
-from core import insights, metrics
+from core import anomalies, filters, insights, metrics
 from core.schema import FIELD_BY_KEY
 from ui import blocks, charts, shell
 from ui import components as ui
@@ -32,19 +33,30 @@ blocks.kpi_row(ctx, available[:5])
 # Trend + highlights
 # ----------------------------------------------------------
 
+@st.cache_data(show_spinner=False, max_entries=32)
+def find_anomalies(digest: str, selections: str, start, end, _hist: pd.DataFrame) -> pd.DataFrame:
+    """Cached by dataset, filters and window (the frame itself isn't hashed)."""
+    return anomalies.detect(_hist, start, end)
+
+
+found = find_anomalies(ctx.dataset.digest, repr(sorted((k, tuple(v)) for k, v in filters.selections().items())),
+                       window.start, window.end, ctx.hist)
+
 st.space("small")
 left, right = st.columns([2, 1], gap="medium")
 with left:
-    blocks.trend_card(ctx, "ov-trend", "Performance over time")
+    blocks.trend_card(ctx, "ov-trend", "Performance over time", alerts=found[found["scope"] == "Total"])
 with right:
-    with ui.card("ov-highlights", "What changed", f"Biggest moves {period}" if prev is not None else ""):
-        items = insights.highlights(cur, prev, period)
-        if items:
-            ui.item_list(items)
-        else:
-            ui.empty_state("No comparison period",
-                           "Choose “Same period last year” or “Previous period” to see what changed.",
-                           icon_name="chart")
+    subtitle = "Unusual months in this period" + (f", then the biggest moves {period}" if prev is not None else "")
+    with ui.card("ov-highlights", "Alerts and changes", subtitle):
+        alerts = anomalies.as_items(found, limit=3)
+        if not alerts:
+            alerts = [{"tone": "info", "title": "No unusual months",
+                       "body": "Every month in this period was within the normal range for its slice."}]
+        moves = insights.highlights(cur, prev, period, limit=6 - len(alerts))
+        ui.item_list(alerts + moves)
+        if prev is None:
+            st.caption("Choose “Same period last year” or “Previous period” to also see what changed.")
 
 # ----------------------------------------------------------
 # Breakdowns (click a bar to filter every page)
