@@ -10,10 +10,12 @@ from ui import components as ui
 
 dataset = state.get_dataset()        # None until a file is uploaded (or the sample is chosen)
 
-# A landing page reads as a website: no app sidebar, a narrower column.
+# A landing page reads as a website: no app sidebar, a narrower column. Streamlit
+# shows the app logo in the page header when the sidebar is collapsed; the top
+# bar below has its own, so that one is hidden too.
 st.html("""<style>
 [data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"],
-[data-testid="stExpandSidebarButton"] { display: none !important; }
+[data-testid="stExpandSidebarButton"], [data-testid="stHeaderLogo"] { display: none !important; }
 [data-testid="stMainBlockContainer"] { max-width: 1220px; padding-top: 1.25rem; }
 </style>""")
 
@@ -81,7 +83,6 @@ with preview_col:
         f'<img src="app/static/hero-{mode}.png" alt="InsightSphere Overview page: KPI tiles for revenue, profit, '
         'margin, orders and order value, and a monthly revenue trend against last year." width="1280" height="800">'
         "</figure>"
-        '<div class="is-hero-caption">Example: the Overview with the bundled sample dataset</div>'
     )
 
 # ----------------------------------------------------------
