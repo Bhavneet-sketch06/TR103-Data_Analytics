@@ -103,7 +103,7 @@ def delta_badge(change: float | None, *, higher_is_better: bool = True,
         good = up == higher_is_better
         cls = "is-delta-good" if good else "is-delta-bad"
         arrow = "▲" if up else "▼"
-    unit = "pp" if kind == "pp" else "%"
+    unit = " pts" if kind == "pp" else "%"   # percentage points, in plain words
     text = f"{arrow} {magnitude:.1f}{unit}{suffix}"
     return f'<span class="{cls} is-delta">{esc(text)}</span>'
 
@@ -165,14 +165,26 @@ def kpi_tile(label: str, value: str, *, change: float | None = None,
 # Card container
 # ----------------------------------------------------------
 
+def info_tip(text: str) -> str:
+    """An ⓘ icon that shows `text` on hover or keyboard focus (plain-language help)."""
+    return (f'<span class="is-tip" tabindex="0" aria-label="{esc(text)}">{icon("info", 14)}'
+            f'<span class="is-tip-text" role="tooltip">{esc(text)}</span></span>')
+
+
 @contextmanager
-def card(key: str, title: str = "", subtitle: str = "", *, height="content"):
-    """Bordered surface for a chart/table. Use as `with card("trend", "Revenue"):`."""
+def card(key: str, title: str = "", subtitle: str = "", *, height="content", help: str = "",
+         insight: str = ""):
+    """
+    Bordered surface for a chart/table. Use as `with card("trend", "Revenue"):`.
+    `help` adds an ⓘ "how to read this" tip next to the title; `insight` is a
+    one-line conclusion shown in bold under it ("Technology sells the most...").
+    """
     with st.container(key=f"card-{key}", height=height):
-        if title or subtitle:
+        if title or subtitle or insight:
             render(
                 '<div class="is-card-head"><div>'
-                + (f'<div class="is-card-title">{esc(title)}</div>' if title else "")
+                + (f'<div class="is-card-title">{esc(title)}{info_tip(help) if help else ""}</div>' if title else "")
+                + (f'<div class="is-card-insight">{esc(insight)}</div>' if insight else "")
                 + (f'<div class="is-card-sub">{esc(subtitle)}</div>' if subtitle else "")
                 + "</div></div>"
             )
@@ -203,6 +215,44 @@ def item_list(items) -> None:
             + "</div></li>"
         )
     render(f'<ul class="is-list">{"".join(rows)}</ul>')
+
+
+_VERDICT_ICON = {"good": "trend_up", "warn": "alert", "bad": "trend_down", "info": "info"}
+
+
+def verdict_banner(verdict: dict) -> None:
+    """The page's bottom line in one glance: a colored headline and one plain sentence."""
+    tone = verdict.get("tone", "info")
+    render(
+        f'<div class="is-verdict is-verdict-{tone}">'
+        f'<div class="is-verdict-icon">{icon(_VERDICT_ICON.get(tone, "info"), 20)}</div>'
+        f'<div><div class="is-verdict-label">Bottom line</div>'
+        f'<div class="is-verdict-title">{esc(verdict["headline"])}</div>'
+        f'<div class="is-verdict-body">{esc(verdict["body"])}</div></div></div>'
+    )
+
+
+def takeaways(key: str, items, title: str = "Key takeaways",
+              subtitle: str = "What this page is telling you, in plain words.") -> None:
+    """A card listing the page's conclusions, two columns on wide screens."""
+    if not items:
+        return
+    with card(key):
+        render(
+            f'<div class="is-takeaways-head">{icon("sparkles", 16)}<span>{esc(title)}</span></div>'
+            f'<div class="is-card-sub" style="margin-bottom:6px">{esc(subtitle)}</div>'
+        )
+        rows = []
+        for item in items:
+            tone = item.get("tone", "info")
+            rows.append(
+                "<li>"
+                f'<span class="is-list-icon {tone}">{icon(item.get("icon", _TONE_ICON.get(tone, "info")), 14)}</span>'
+                f'<div><div class="is-list-title">{esc(item["title"])}</div>'
+                + (f'<div class="is-list-body">{esc(item["body"])}</div>' if item.get("body") else "")
+                + "</div></li>"
+            )
+        render(f'<ul class="is-list is-takeaways">{"".join(rows)}</ul>')
 
 
 def stat_chips(pairs) -> None:

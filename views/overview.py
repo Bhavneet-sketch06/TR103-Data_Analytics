@@ -50,6 +50,9 @@ period = blocks.period_label(window)
 # ----------------------------------------------------------
 
 st.space("small")
+ui.verdict_banner(insights.overview_verdict(cur, prev, period))
+
+st.space("small")
 preferred = ["revenue", "profit", "margin", "orders", "aov", "customers", "units"]
 available = [k for k in preferred if k in metrics.kpis(cur)]
 blocks.kpi_row(ctx, available[:5])
@@ -66,7 +69,9 @@ with left:
     blocks.trend_card(ctx, "ov-trend", "Performance over time", alerts=found[found["scope"] == "Total"])
 with right:
     subtitle = "Unusual months in this period" + (f", then the biggest moves {period}" if prev is not None else "")
-    with ui.card("ov-highlights", "Alerts and changes", subtitle):
+    with ui.card("ov-highlights", "Alerts and changes", subtitle,
+                 help="Green = good news, red = a problem, amber = worth watching. A month is flagged as "
+                      "unusual when it's far from what the months before it suggested."):
         alerts = anomalies.as_items(found, limit=3)
         if not alerts:
             alerts = [{"tone": "info", "title": "No unusual months",
@@ -87,7 +92,10 @@ if dims:
         label = FIELD_BY_KEY[dim].label
         table = metrics.breakdown(cur, dim)
         with col:
-            with ui.card(f"ov-{dim}", f"Revenue by {label.lower()}", "Click a bar to filter every page."):
+            with ui.card(f"ov-{dim}", f"Revenue by {label.lower()}", "Click a bar to filter every page.",
+                         insight=insights.breakdown_summary(table),
+                         help="Each bar is total sales. The % after it is the profit margin: how much of "
+                              "each sale is profit. A negative margin means it loses money."):
                 fig = blocks.rank_bars(table, dim, "revenue", note="margin" if "margin" in table else None,
                                        max_items=8)
                 blocks.filter_chart(fig, f"ov-{dim}-bars", dim)
@@ -101,7 +109,9 @@ if mover_dims:
     st.space("small")
     subtitle = (f"Largest revenue changes {period}, gainers and decliners."
                 if prev is not None else "Largest contributors in the selected period.")
-    with ui.card("ov-movers", "Top movers", subtitle):
+    with ui.card("ov-movers", "Top movers", subtitle,
+                 help="What grew or shrank the most compared with the comparison period. A positive change "
+                      "means more sales than before; a negative one means fewer."):
         a, b = st.columns([3, 1], vertical_alignment="center")
         dim = a.segmented_control(
             "Group by", mover_dims, default=mover_dims[min(1, len(mover_dims) - 1)], key="ov-movers-dim",

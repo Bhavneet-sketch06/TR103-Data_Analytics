@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from core import metrics
+from core import insights, metrics
 from core.analytics import customers
 from ui import blocks, charts, shell
 from ui import components as ui
@@ -64,15 +64,22 @@ for col, (label, value, change, kind, spark) in zip(st.columns(len(tiles)), tile
         ui.kpi_tile(label, value, change=change, period=period, kind=kind, spark=spark,
                     help_text=helps.get(label, ""))
 
+rfm = customers.rfm(hist, as_of=window.end)
+segments = customers.segment_summary(rfm)
+top10 = customers.top_customers(cur, n=10)["revenue"].sum() / cur["revenue"].sum() if cur["revenue"].sum() else None
+st.space("small")
+ui.takeaways("cust-takeaways", insights.customer_takeaways(now, before, segments, top10))
+
 # ----------------------------------------------------------
 # RFM segments
 # ----------------------------------------------------------
 
 st.space("small")
-rfm = customers.rfm(hist, as_of=window.end)
-segments = customers.segment_summary(rfm)
 with ui.card("cust-rfm", "Customer segments",
-             f"RFM segments as of {window.end:%b %d, %Y}: how recently, how often and how much each customer buys."):
+             f"As of {window.end:%b %d, %Y}: grouped by how recently, how often and how much each customer buys.",
+             help="Champions bought recently, buy often and spend the most. Loyal customers buy regularly. "
+                  "At risk and Can't lose used to buy often but have gone quiet. Hibernating customers bought "
+                  "little, long ago."):
     left, right = st.columns([2, 3], gap="large")
     with left:
         fig = go.Figure(go.Bar(
@@ -117,9 +124,12 @@ st.space("small")
 grain = customers.cohort_grain(hist)
 unit = "month" if grain == "M" else "quarter"
 matrix = customers.cohorts(hist, grain, n_cohorts=12, max_age=12, min_size=10)
-with ui.card("cust-cohorts", "Retention by cohort",
+with ui.card("cust-cohorts", "Do customers come back?",
              f"Customers grouped by the {unit} of their first order; each cell is the share who ordered again "
-             f"that many {unit}s later. Cohorts under 10 customers are hidden."):
+             f"that many {unit}s later. Groups under 10 customers are hidden.",
+             help=f"Each row is a group of customers who first bought in the same {unit}. Moving right, each "
+                  f"cell shows what share of that group ordered again 1, 2, 3... {unit}s later. Darker, higher "
+                  f"numbers mean more loyal customers."):
     if matrix.empty:
         ui.empty_state("Not enough customers for cohorts", "Each cohort needs at least 10 customers.")
     else:

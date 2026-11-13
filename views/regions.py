@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from core import metrics
+from core import insights, metrics
 from core.analytics import operations
 from core.schema import FIELD_BY_KEY
 from ui import blocks, charts, shell
@@ -50,6 +50,9 @@ if "region" in has:
     if len(table) > len(shown):
         st.caption(f"Top {len(shown)} of {len(table)} regions by revenue.")
 
+st.space("small")
+ui.takeaways("reg-takeaways", insights.region_takeaways(cur, prev, period))
+
 # ----------------------------------------------------------
 # Map / state ranking
 # ----------------------------------------------------------
@@ -66,7 +69,9 @@ if "state" in has:
     left, right = st.columns([7, 5], gap="medium")
     with left:
         with ui.card("reg-map", "Revenue by state" if is_us else "Top states",
-                     "Click a state to explore it below."):
+                     "Click a state to explore it below.",
+                     help="Colored by revenue: darker states sell more. Colored by profit margin: blue states "
+                          "make money, orange states lose money, grey ones are about break-even."):
             options = ["revenue"] + (["margin"] if "margin" in states else [])
             metric = st.segmented_control(
                 "Color by", options, default="revenue", key="reg-map-metric",
@@ -105,13 +110,17 @@ if "state" in has:
     with right:
         with ui.card("reg-states", "State ranking", f"Revenue and margin in the period"
                      + (f", change {period}" if has_prev else "") + "."):
-            columns = [c for c in ("state", "revenue", "margin", "change_pct") if c in states]
+            if "margin" in states:
+                states["result"] = ["Making money" if m > 0 else "Losing money" if m < 0 else "Break-even"
+                                    for m in states["margin"].fillna(0)]
+            columns = [c for c in ("state", "revenue", "margin", "result", "change_pct") if c in states]
             st.dataframe(
                 blocks.as_percent(states[columns], "margin"), hide_index=True, width="stretch", height=430,
                 column_config={
                     "state": st.column_config.TextColumn("State"),
                     "revenue": st.column_config.NumberColumn("Revenue", format="dollar"),
                     "margin": blocks.pct_column("Margin", width="small"),
+                    "result": st.column_config.TextColumn("Result", width="small"),
                     "change_pct": st.column_config.NumberColumn("Change", format="%+.0f%%", width="small"),
                 },
             )

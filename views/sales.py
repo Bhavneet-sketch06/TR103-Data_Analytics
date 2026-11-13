@@ -8,7 +8,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from core import metrics
+from core import insights, metrics
 from core.analytics import products
 from ui import blocks, charts, shell
 from ui import components as ui
@@ -26,6 +26,8 @@ has = set(cur.columns)
 
 st.space("small")
 blocks.kpi_row(ctx, ["revenue", "units", "orders", "aov", "discount"])
+st.space("small")
+ui.takeaways("sales-takeaways", insights.sales_takeaways(cur, ctx.hist))
 
 # ----------------------------------------------------------
 # Product mix (treemap) + concentration (Pareto)
@@ -39,7 +41,9 @@ with left:
         levels = ["category"] + (["sub_category"] if "sub_category" in has else [])
         with ui.card("sales-mix", "Product mix",
                      "Size = revenue, color = profit margin. Click a tile to zoom in, the top bar to zoom out."
-                     if "profit" in has else "Size = revenue. Click a tile to zoom in."):
+                     if "profit" in has else "Size = revenue. Click a tile to zoom in.",
+                     help="Each box is a category or sub-category; a bigger box means more sales. Blue boxes "
+                          "make a profit, orange boxes lose money, grey ones are about break-even."):
             grouped = cur.groupby(levels, observed=True).agg(
                 revenue=("revenue", "sum"), **({"profit": ("profit", "sum")} if "profit" in has else {}),
             ).reset_index()
@@ -81,7 +85,11 @@ with right:
         table = products.pareto(cur, "product")
         abc = products.abc_summary(table).set_index("abc")
         with ui.card("sales-pareto", "Revenue concentration",
-                     "Share of revenue made by the top x% of products."):
+                     "Share of revenue made by the top x% of products.",
+                     insight=f"The top 20% of products bring in {products.top_share(table, 0.2):.0%} of revenue.",
+                     help="Read left to right: products are sorted from best-selling to worst, and the line adds "
+                          "up their share of revenue. A steep start means a few products bring in most of the "
+                          "money. Class A = the products making the first 80% of revenue."):
             fig = go.Figure()
             for cls, x0, x1 in (("A", 0, abc.loc["A", "item_share"]),
                                 ("B", abc.loc["A", "item_share"], abc.loc[["A", "B"], "item_share"].sum())):
@@ -111,7 +119,9 @@ st.space("small")
 left, right = st.columns([7, 5], gap="medium")
 
 with left:
-    with ui.card("sales-season", "Seasonality", "Monthly revenue by year, all history. Stronger blue = more revenue."):
+    with ui.card("sales-season", "Seasonality", "Monthly revenue by year, all history. Stronger blue = more revenue.",
+                 help="Each cell is one month of one year. Read across a row to compare the same month over the "
+                      "years, or down a column to see the shape of a year."):
         season = products.seasonality(ctx.hist)
         z = season.values
         text = [[charts.money(v) if pd.notna(v) else "" for v in row] for row in z]
