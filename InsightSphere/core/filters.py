@@ -22,7 +22,7 @@ DEFAULT_PRESET = "Last 12 months"
 
 COMPARE = ["Previous period", "Same period last year", "No comparison"]
 DEFAULT_COMPARE = "Same period last year"
-COMPARE_SHORT = {"Previous period": "vs prev. period", "Same period last year": "vs LY"}
+COMPARE_SHORT = {"Previous period": "vs previous period", "Same period last year": "vs last year"}
 
 FILTER_DIMS = ["region", "category", "segment"]
 

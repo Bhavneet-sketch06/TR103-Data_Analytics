@@ -45,7 +45,7 @@ def _delta(change, higher_is_better=True, kind="pct") -> str:
         return '<span class="d flat">→ 0.0</span>'
     up = change > 0
     cls = "good" if up == higher_is_better else "bad"
-    unit = "pp" if kind == "pp" else "%"
+    unit = " pts" if kind == "pp" else "%"   # percentage points, in plain words
     return f'<span class="d {cls}">{"▲" if up else "▼"} {abs(change) * 100:.1f}{unit}</span>'
 
 
@@ -217,6 +217,10 @@ td{{text-align:right;border-bottom:1px solid {T['grid']};padding:6px 8px}} .l{{t
 .mk.good{{color:{T['good']}}} .mk.bad{{color:{T['bad']}}} .mk.warn{{color:{T['warn']}}} .mk.info{{color:{T['text_3']}}}
 .legend{{display:flex;gap:16px;font-size:12px;color:{T['text_2']};margin-bottom:6px}}
 .legend i{{display:inline-block;width:16px;height:0;vertical-align:middle;margin-right:6px}}
+.verdict{{border-left:4px solid {T['accent']}}} .verdict.good{{border-left-color:{T['good']}}}
+.verdict.warn{{border-left-color:{T['warn']}}} .verdict.bad{{border-left-color:{T['bad']}}}
+.vl2{{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:{T['text_3']}}}
+.vh{{font-size:18px;font-weight:700;margin:2px 0}} .vb{{color:{T['text_2']};font-size:13px}}
 footer{{margin-top:22px;color:{T['text_3']};font-size:11.5px}}
 @media (max-width:720px){{.kpis{{grid-template-columns:repeat(2,1fr)}} .grid{{grid-template-columns:1fr}}}}
 @page{{size:A4;margin:12mm}}
@@ -243,7 +247,10 @@ def build(ctx, selections: dict, forecast: forecasting.Result | None = None,
     items += insights.highlights(cur, prev, period, limit=6 - len(items))
 
     breakdowns = [d for d in ("category", "region", "segment") if d in cur][:2]
+    verdict = insights.overview_verdict(cur, prev, period)
     sections = [
+        f'<section class="card verdict {verdict["tone"]}"><div class="vl2">Bottom line</div>'
+        f'<div class="vh">{esc(verdict["headline"])}</div><div class="vb">{esc(verdict["body"])}</div></section>',
         _kpis(cur, prev, period),
         f'<section class="card"><h3>Revenue trend</h3>{legend}{line_chart(current, compared)}</section>',
     ]

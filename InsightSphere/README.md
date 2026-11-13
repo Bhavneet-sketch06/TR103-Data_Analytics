@@ -21,6 +21,8 @@ Built with Streamlit, pandas, Plotly and statsmodels. Everything runs on your ow
 | **Forecast** | Forecast with 80% and 95% ranges, model comparison from back-tests, a **what-if** simulator (discount, price, volume) and **saved runs** you can compare. |
 | **Data** | Data-health checks, the column mapping, a searchable data explorer with CSV/Excel export, and monthly revenue targets. |
 
+**Every page tells you what it means.** The Overview opens with a *bottom line* ("Growing and profitable", "Sales are up, but profit is down", "Losing money") in one plain sentence. Every other page starts with *key takeaways*: three to five sentences worked out from your data, such as "9 states lose money; biggest: Texas", "Discounts of 21–30% and deeper lose money" or "135 good customers have gone quiet". Green means good news, red a problem. Chart titles state their conclusion, harder charts have an ⓘ "how to read this" tip, and every KPI explains itself on hover.
+
 Clicking a bar on the Overview filters every page; filters show as removable chips. Light and dark themes switch instantly from the top of every page.
 
 ![Overview](docs/screenshots/overview.png)
@@ -30,6 +32,9 @@ Clicking a bar on the Overview filters every page; filters show as removable chi
 
 **Overview, dark theme**
 ![Overview in dark mode](docs/screenshots/overview-dark.png)
+
+**Regions: key takeaways**
+![Regions](docs/screenshots/regions.png)
 
 **Sales**
 ![Sales](docs/screenshots/sales.png)
@@ -117,7 +122,7 @@ core/                data and analysis (pure pandas, unit-tested)
   ingest.py          read, map, derive, save uploads
   filters.py         date windows, comparisons, dimension filters
   metrics.py         KPIs, series, breakdowns, top movers
-  insights.py        plain-language highlights
+  insights.py        plain-language verdict, takeaways and chart conclusions
   anomalies.py       unusual-month detection
   forecasting.py     models, back-tests, intervals
   simulator.py       what-if levers

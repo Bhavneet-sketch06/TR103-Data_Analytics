@@ -12,7 +12,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from core import anomalies, db, filters, forecasting, metrics
+from core import anomalies, db, filters, forecasting, insights, metrics
 from ui import charts
 from ui import components as ui
 
@@ -77,6 +77,20 @@ def _revenue_target(ctx) -> tuple[float | None, str]:
     return progress, f"{progress:.0%} of {charts.money(total)} target"
 
 
+KPI_HELP = {
+    "revenue": "Total sales in the period, before any costs.",
+    "profit": "What's left after costs. A negative number means a loss.",
+    "margin": "Profit as a share of sales: of every $100 sold, how much you keep. "
+              "Changes are in points (12% to 14% is +2 pts).",
+    "orders": "Number of separate orders placed.",
+    "aov": "Average amount spent per order (sales ÷ orders).",
+    "customers": "Number of different customers who ordered.",
+    "units": "Total number of items sold.",
+    "discount": "Average discount given on order lines. Lower usually means better margins.",
+    "ship_days": "Average days from order to shipment. Lower is better.",
+}
+
+
 def kpi_row(ctx, keys, labels: dict | None = None) -> None:
     """KPI tiles with change vs the comparison period and a 12-month sparkline."""
     now = metrics.kpis(ctx.cur)
@@ -97,6 +111,7 @@ def kpi_row(ctx, keys, labels: dict | None = None) -> None:
                 spark=spark,
                 target_progress=target if key == "revenue" else None,
                 target_label=target_label if key == "revenue" else "",
+                help_text=KPI_HELP.get(key, ""),
             )
 
 
@@ -147,8 +162,17 @@ def trend_chart(ctx, key: str, metric: str, grain: str, height: int = 300,
 def trend_card(ctx, key: str, title: str = "Trend", metrics_offered=("revenue", "profit", "orders"),
                alerts: pd.DataFrame | None = None) -> None:
     offered = [m for m in metrics_offered if m in ("revenue", "orders") or "profit" in ctx.cur.columns]
-    with ui.card(key, title, f"{ctx.window.label}" + (f" · dotted line {period_label(ctx.window)}"
-                                                      if ctx.prev is not None else "")):
+    # The conclusion line depends on the chosen metric and grain: read them before the widgets draw.
+    chosen = st.session_state.get(f"{key}-metric") or offered[0]
+    chosen_grain = st.session_state.get(f"{key}-grain") or metrics.auto_grain(ctx.window.start, ctx.window.end)
+    current = metrics.series(ctx.cur, chosen, chosen_grain)
+    compared = (metrics.comparison_series(ctx.prev, current, ctx.window, chosen, chosen_grain)
+                if ctx.prev is not None and not ctx.prev.empty else None)
+    insight = insights.trend_summary(current, compared, chosen_grain, as_money=chosen in ("revenue", "profit"))
+    subtitle = ctx.window.label + (f" · dotted line {period_label(ctx.window)}" if ctx.prev is not None else "")
+    with ui.card(key, title, subtitle, insight=insight,
+                 help="The solid line is this period. The dotted line is the comparison period, shifted so the "
+                      "same months line up. Solid above dotted means you're doing better than before."):
         a, b = st.columns([1, 1], vertical_alignment="center")
         metric = a.segmented_control(
             "Metric", offered, default=offered[0], key=f"{key}-metric",

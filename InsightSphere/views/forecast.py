@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from core import db, filters, forecasting, simulator
+from core import db, filters, forecasting, insights, simulator
 from core.schema import FIELD_BY_KEY
 from ui import blocks, charts, shell
 from ui import components as ui
@@ -55,8 +55,8 @@ with forecast_tab:
     max_h = 12 if grain == "Month" else 26
     horizon = c3.slider(f"Horizon ({GRAIN_UNIT[grain]}s ahead)", 3 if grain == "Month" else 4, max_h,
                         6 if grain == "Month" else 8, key=f"fc-h-{grain}")
-    model = c4.selectbox("Model", ["Auto", *forecasting.models_for(grain)], key=f"fc-model-{grain}",
-                         help="Auto picks the model with the lowest back-tested error.")
+    model = c4.selectbox("Method", ["Auto", *forecasting.models_for(grain)], key=f"fc-model-{grain}",
+                         help="Auto uses the method that predicted your past data best.")
 
     try:
         with st.spinner("Fitting and back-testing models…"):
@@ -89,26 +89,32 @@ with forecast_tab:
                     period="sum of the monthly 80% ranges" if grain == "Month" else "sum of the weekly 80% ranges",
                     help_text="Adding up each period's range overstates the total's uncertainty a little.")
     with k3:
-        ui.kpi_tile("Model", result.chosen,
-                    period="lowest back-tested error" if model == "Auto" else "chosen manually")
+        ui.kpi_tile("Method", result.chosen,
+                    period="the most accurate on past data" if model == "Auto" else "chosen manually",
+                    help_text="Three methods are tried on past data; the one that predicted it best is used.")
     with k4:
         if chosen["mape"] is not None and pd.notna(chosen["mape"]):
             accuracy, foot = f"{chosen['mape']:.1%}", "average error in back-tests"
         else:
-            accuracy, foot = f"{chosen['mase']:.2f}", "error vs seasonal naive (MASE)"
+            accuracy, foot = f"{chosen['mase']:.2f}", "error vs the simple baseline (lower is better)"
         if result.chosen != forecasting.NAIVE and improvement is not None:
-            foot = (f"{improvement:.0%} less error than the baseline" if improvement > 0
-                    else "no better than the baseline")
-        ui.kpi_tile("Back-test error", accuracy, period=foot,
-                    help_text="Average error when the model forecast past periods it hadn't seen. "
-                              "The baseline repeats last season's values.")
+            foot = (f"{improvement:.0%} more accurate than a simple guess" if improvement > 0
+                    else "no better than a simple guess")
+        ui.kpi_tile("Typical error", accuracy, period=foot,
+                    help_text="How far off the method was, on average, when it predicted past months it hadn't "
+                              "seen. The simple guess repeats last year's numbers.")
+
+    st.space("small")
+    ui.takeaways("fc-takeaways", insights.forecast_takeaways(result))
 
     # ---------- chart ----------
     st.space("small")
     shown = y.iloc[-(36 if grain == "Month" else 104):]
     accent = t["accent"]
     with ui.card("fc-chart", f"{forecasting.METRICS[metric]} forecast",
-                 f"Solid: actual. Dashed: {result.chosen} forecast. Bands: 80% and 95% ranges."):
+                 f"Solid: actual. Dashed: {result.chosen} forecast. Bands: 80% and 95% ranges.",
+                 help="The dashed line is the most likely path. The darker band is where the real number will "
+                      "probably land (8 times in 10); the lighter band is almost certain (19 times in 20)."):
         fig = go.Figure()
         band_x = [shown.index[-1], *f.index]
         for lo, hi, alpha, name in ((f.lo95, f.hi95, 0.10, "95% range"), (f.lo80, f.hi80, 0.20, "80% range")):
@@ -135,9 +141,11 @@ with forecast_tab:
     st.space("small")
     left, right = st.columns([5, 7], gap="medium")
     with left:
-        with ui.card("fc-backtest", "How the models compared",
-                     f"Rolling back-test: each model forecast {horizon} {unit}s ahead from several past "
-                     f"points, using only the data before each point."):
+        with ui.card("fc-backtest", "How accurate each method was",
+                     f"Each method predicted {horizon} {unit}s ahead from several points in the past, using only "
+                     f"the data before each point; we then compared with what really happened.",
+                     help="Avg error: how far off the predictions were, on average. Error vs baseline: below 1 "
+                          "means better than simply repeating last year's numbers."):
             scores = result.comparison.copy()
             scores["mape"] = scores["mape"].astype(float) * 100
             scores["pick"] = scores["chosen"].map({True: "Chosen", False: ""})
@@ -145,16 +153,16 @@ with forecast_tab:
                 scores[["model", "mape", "mase", "pick"]], hide_index=True, width="stretch",
                 height=charts.table_height(len(scores)),
                 column_config={
-                    "model": st.column_config.TextColumn("Model"),
-                    "mape": blocks.pct_column("Avg error", help="Mean absolute percentage error"),
+                    "model": st.column_config.TextColumn("Method"),
+                    "mape": blocks.pct_column("Avg error", help="How far off the predictions were, on average."),
                     "mase": st.column_config.NumberColumn(
-                        "MASE", format="%.2f", help="Error relative to the seasonal-naive baseline's typical "
-                                                    "error. Lower is better."),
+                        "Error vs baseline", format="%.2f",
+                        help="Below 1 = better than repeating last year's numbers. Lower is better."),
                     "pick": st.column_config.TextColumn("", width="small"),
                 },
             )
-            st.caption("The model with the lowest MASE is picked in Auto. Seasonal naive repeats last "
-                       "season's values, so it's the baseline to beat.")
+            st.caption("Auto uses the method with the lowest error vs baseline. Seasonal naive simply repeats "
+                       "last year's numbers, so it's the baseline to beat.")
     with right:
         with ui.card("fc-table", "Forecast values", f"Per {unit}, with 80% and 95% ranges."):
             out = f.frame().reset_index(names="period")
@@ -247,8 +255,17 @@ with whatif_tab:
                             if result_sim["margin"] is not None else None, kind="pp",
                             period=f"baseline {charts.pct(result_sim['baseline_margin'])}")
             st.space("small")
+            change = result_sim["profit"] - base_profit
+            if abs(change) < 0.5:
+                sentence = "Move the sliders to see how profit would change."
+            else:
+                sentence = (f"With these changes, profit would be {charts.money(result_sim['profit'])} instead of "
+                            f"{charts.money(base_profit)}: {'more' if change > 0 else 'less'} by "
+                            f"{charts.money(abs(change))}.")
             with ui.card("wi-waterfall", "Where the profit change comes from",
-                         "Baseline profit, each lever's effect, and the scenario."):
+                         "Baseline profit, each lever's effect, and the scenario.", insight=sentence,
+                         help="Start from today's expected profit (left), add or subtract the effect of each "
+                              "slider, and you get the new profit (right). Blue raises profit, orange lowers it."):
                 steps = result_sim["steps"]
                 diverging = charts.diverging_scale()
                 neg, pos = diverging[1][1], diverging[-2][1]

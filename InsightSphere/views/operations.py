@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from core import metrics
+from core import insights, metrics
 from core.analytics import operations, products
 from core.schema import FIELD_BY_KEY
 from ui import blocks, charts, shell
@@ -80,6 +80,8 @@ for col, (label, value, change, kind, help_text) in zip(st.columns(len(tiles)), 
     with col:
         ui.kpi_tile(label, value, change=change, period=period, kind=kind,
                     higher_is_better=False, help_text=help_text)
+st.space("small")
+ui.takeaways("ops-takeaways", insights.operations_takeaways(cur))
 
 # ----------------------------------------------------------
 # Discounts
@@ -93,7 +95,9 @@ if has_discount:
         left, right = st.columns(2, gap="medium")
         with left:
             with ui.card("ops-band-margin", "Profit margin by discount band",
-                         "Bigger discounts, thinner margins. Observed in your data, not proven cause and effect."):
+                         "Observed in your data, not proven cause and effect.",
+                         help="Each bar is the average profit margin of orders at that discount level. Bars below "
+                              "zero mean those orders lose money on average."):
                 fig = go.Figure(go.Bar(
                     x=bands["band"].astype(str), y=bands["margin"],
                     marker_color=[POS if m >= 0 else NEG for m in bands["margin"]],
@@ -140,7 +144,9 @@ if has_discount:
         if dim and "profit" in has:
             label = FIELD_BY_KEY[dim].label
             with ui.card("ops-scatter", f"Discount vs margin by {label.lower()}",
-                         "Bubble size = revenue. Loss-making ones are labelled."):
+                         "Bubble size = revenue. Loss-making ones are labelled.",
+                         help="Each bubble is one group of products. Further right = bigger average discount; "
+                              "lower = smaller profit margin. Bubbles below the zero line lose money."):
                 agg = cur.groupby(dim, observed=True).agg(
                     discount=("discount", "mean"), revenue=("revenue", "sum"), profit=("profit", "sum"),
                 ).reset_index()
